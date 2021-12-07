@@ -1,4 +1,4 @@
-import { problem2_1 } from "./02.js";
+import { problem2_1, problem2_2 } from "./02.js";
 
 describe("day 2: dive!", () => {
   describe("example inputs", () => {
@@ -13,6 +13,10 @@ describe("day 2: dive!", () => {
 
     test("part 1 solution works", () => {
       expect(problem2_1(exampleInput)).toBe(150);
+    });
+
+    test("part 2 solution works", () => {
+      expect(problem2_2(exampleInput)).toBe(900);
     });
   });
 });

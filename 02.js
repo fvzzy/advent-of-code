@@ -24,3 +24,30 @@ export function problem2_1(input) {
   return x * y;
 }
 
+export function problem2_2(input) {
+  let x = 0;
+  let y = 0;
+  let aim = 0;
+
+  for (let move of input) {
+    if (!move.length) continue;
+
+    const [command, value] = move.split(" ");
+    const valueInt = Number(value);
+
+    switch (command) {
+      case "forward":
+        x += valueInt;
+        y += valueInt * aim;
+        break;
+      case "up":
+        aim -= valueInt;
+        break;
+      case "down":
+        aim += valueInt;
+        break;
+    }
+  }
+
+  return x * y;
+}
