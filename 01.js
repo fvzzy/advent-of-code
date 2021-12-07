@@ -1,4 +1,9 @@
 export function problem1(input) {
+/* 
+  Day 1: Sonar Sweep
+  https://adventofcode.com/2021/day/1
+*/
+
   let count = 0;
   for (let i = 1; i < input.length; i++) {
     if (input[i] > input[i - 1]) count++;
