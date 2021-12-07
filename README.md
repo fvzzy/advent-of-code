@@ -20,8 +20,14 @@ Install dependencies:
 npm install
 ```
 
-Pick a `{day}.js` file and run it with the `-r dotenv/config` flag to read in your session token. e.g:
+Pick a `{day}.output.js` file and run it with the `-r dotenv/config` flag to read in your session token. e.g:
 
 ```
-node -r dotenv/config 01.js
+node -r dotenv/config 01.output.js
+```
+
+### Unit tests
+
+```
+npm run test
 ```
