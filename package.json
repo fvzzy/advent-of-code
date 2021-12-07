@@ -6,7 +6,8 @@
   "author": "Farhan Rahman",
   "type": "module",
   "scripts": {
-    "test": "NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' jest"
+    "test": "NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' jest",
+    "answers": "node -r dotenv/config answers.js"
   },
   "dependencies": {
     "dotenv": "^10.0.0",

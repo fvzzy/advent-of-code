@@ -6,7 +6,7 @@
 
 I've included a small helper at [lib/utils.js](/lib/utils.js) to fetch the inputs provided for a given day.
 
-Store a session token in `.env` if you want to use it, e.g:
+Store a session token in `.env` to use it, e.g:
 
 ```
 echo SESSION_TOKEN={your token here} > .env
@@ -20,10 +20,10 @@ Install dependencies:
 npm install
 ```
 
-Pick a `{day}.output.js` file and run it with the `-r dotenv/config` flag to read in your session token. e.g:
+Choose a day and run `answers.js` (uses `-r dotenv/config` flag to read in your session token from `.env`):
 
 ```
-node -r dotenv/config 01.output.js
+npm run answers 1
 ```
 
 ### Unit tests
