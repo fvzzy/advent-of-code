@@ -1,4 +1,4 @@
-import { problem3_1 } from "./03.js";
+import { problem3_1, problem3_2 } from "./03.js";
 
 describe("day 3: binary diagnostic", () => {
   describe("example inputs", () => {
@@ -19,6 +19,10 @@ describe("day 3: binary diagnostic", () => {
 
     test("part 1 solution works", () => {
       expect(problem3_1(exampleInput)).toBe(198);
+    });
+
+    test("part 2 solution works", () => {
+      expect(problem3_2(exampleInput)).toBe(230);
     });
   });
 });

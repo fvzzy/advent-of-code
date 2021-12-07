@@ -1,12 +1,12 @@
 import { getInput } from "./lib/utils.js";
 import { problem1_1, problem1_2 } from "./01.js";
 import { problem2_1, problem2_2 } from "./02.js";
-import { problem3_1 } from "./03.js";
+import { problem3_1, problem3_2 } from "./03.js";
 
 const solution = {
   1: { problem1: problem1_1, problem2: problem1_2 },
   2: { problem1: problem2_1, problem2: problem2_2 },
-  3: { problem1: problem3_1 },
+  3: { problem1: problem3_1, problem2: problem3_2 },
 };
 
 const day = process.argv.slice(2)[0];
