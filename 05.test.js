@@ -20,7 +20,7 @@ describe(`day ${day}: ${title}`, () => {
     });
 
     test("part 2 solution works", () => {
-      expect(problem5_2(exampleInput)).toBe(undefined);
+      expect(problem5_2(exampleInput)).toBe(12);
     });
   });
 });

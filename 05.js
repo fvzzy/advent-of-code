@@ -14,16 +14,17 @@ const updateCoordsIntersectCounts = (countsMap, x, y) => {
   countsMap[key] ? countsMap[key]++ : (countsMap[key] = 1);
 };
 
-export function problem5_1(input) {
+const countIntersectingLines = (input, skipDiagonals = true) => {
   let coordsIntersectCounts = {};
 
   for (let inputLine of input) {
     const { startX, startY, endX, endY } = inputToCoords(inputLine);
-    if (startX !== endX && startY !== endY) continue;
+    if (skipDiagonals && startX !== endX && startY !== endY) continue;
     updateCoordsIntersectCounts(coordsIntersectCounts, startX, startY);
 
     let x = startX;
     let y = startY;
+
     while (x !== endX || y !== endY) {
       if (x > endX) x--;
       else if (x < endX) x++;
@@ -38,6 +39,12 @@ export function problem5_1(input) {
   ).length;
 
   return coordsWithOverlaps;
+};
+
+export function problem5_1(input) {
+  return countIntersectingLines(input);
 }
 
-export function problem5_2(input) {}
+export function problem5_2(input) {
+  return countIntersectingLines(input, false);
+}
