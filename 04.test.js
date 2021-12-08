@@ -28,5 +28,9 @@ describe(`day ${day}: ${title}`, () => {
     test("part 1 solution works", () => {
       expect(problem4_1(exampleInput)).toBe(4512);
     });
+
+    test("part 2 solution works", () => {
+      expect(problem4_2(exampleInput)).toBe(1924);
+    });
   });
 });

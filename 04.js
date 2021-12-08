@@ -106,4 +106,40 @@ export function problem4_1(input) {
   }
 }
 
-export function problem4_2(input) {}
+export function problem4_2(input) {
+  const { numbers, boards } = processInput(input);
+  const rowsColsSets = boardsToRowColSets(boards);
+  const boardUnmarkedSum = boardTotalSums(boards);
+  const activeBoards = new Set(Object.keys(boards));
+
+  for (let calledNumber of numbers) {
+    for (let boardNumber in rowsColsSets) {
+      // skip boards that have already won
+      if (!activeBoards.has(boardNumber)) continue;
+
+      for (let seriesType in rowsColsSets[boardNumber]) {
+        const series = rowsColsSets[boardNumber][seriesType];
+
+        for (let setIdx = 0; setIdx < series.length; setIdx++) {
+          const set = series[setIdx];
+
+          if (!set.has(calledNumber)) continue;
+          set.delete(calledNumber);
+          if (seriesType === "rows")
+            boardUnmarkedSum[boardNumber] -= calledNumber;
+
+          // bingo!
+          if (set.size === 0) {
+            // remove winning boards from active set
+            activeBoards.delete(boardNumber);
+
+            // return answer if this is the last board
+            if (activeBoards.size === 0) {
+              return calledNumber * boardUnmarkedSum[boardNumber];
+            }
+          }
+        }
+      }
+    }
+  }
+}
