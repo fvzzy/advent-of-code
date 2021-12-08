@@ -1,6 +1,6 @@
-import { problem1_1, problem1_2 } from "./01.js";
+import { problem1_1, problem1_2, day, title } from "./01.js";
 
-describe("day 1: sonar sweep", () => {
+describe(`day ${day}: ${title}`, () => {
   describe("example inputs", () => {
     const exampleInput = [199, 200, 208, 210, 200, 207, 240, 269, 260, 263];
 

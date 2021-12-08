@@ -1,6 +1,6 @@
-import { problem2_1, problem2_2 } from "./02.js";
+import { problem2_1, problem2_2, day, title } from "./02.js";
 
-describe("day 2: dive!", () => {
+describe(`day ${day}: ${title}`, () => {
   describe("example inputs", () => {
     const exampleInput = [
       "forward 5",

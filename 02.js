@@ -1,7 +1,5 @@
-/* 
-  Day 2: Dive!
-  https://adventofcode.com/2021/day/2
-*/
+export const day = 2;
+export const title = "dive!";
 
 export function problem2_1(input) {
   let x = 0;

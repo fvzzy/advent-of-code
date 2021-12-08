@@ -1,7 +1,5 @@
-/* 
-  Day 1: Sonar Sweep
-  https://adventofcode.com/2021/day/1
-*/
+export const day = 1;
+export const title = "sonar sweep";
 
 export function problem1_1(input) {
   const depths = input.map(Number);

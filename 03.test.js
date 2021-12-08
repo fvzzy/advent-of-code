@@ -1,6 +1,6 @@
-import { problem3_1, problem3_2 } from "./03.js";
+import { problem3_1, problem3_2, day, title } from "./03.js";
 
-describe("day 3: binary diagnostic", () => {
+describe(`day ${day}: ${title}`, () => {
   describe("example inputs", () => {
     const exampleInput = [
       "00100",
