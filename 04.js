@@ -8,10 +8,6 @@ const processInput = (input) => {
   let boards = {};
 
   for (let line = 1; line < input.length; line++) {
-    // exit if we're at a blank line before the EOF
-    const endOfFile = !input[line] && !input[line + 1];
-    if (endOfFile) break;
-
     // if we're at the blank line before a new board, initialise an empty board
     if (!input[line].length) {
       board += 1;
