@@ -73,13 +73,17 @@ const boardsToRowColSets = (boards) => {
   return result;
 };
 
-export function problem4_1(input) {
+const winningBingoScore = (input, lastBoardWins = false) => {
   const { numbers, boards } = processInput(input);
   const rowsColsSets = boardsToRowColSets(boards);
   const boardUnmarkedSum = boardTotalSums(boards);
+  const activeBoards = new Set(Object.keys(boards));
 
   for (let calledNumber of numbers) {
     for (let boardNumber in rowsColsSets) {
+      // skip boards that have already won
+      if (!activeBoards.has(boardNumber)) continue;
+
       for (let seriesType in rowsColsSets[boardNumber]) {
         const series = rowsColsSets[boardNumber][seriesType];
 
@@ -98,38 +102,11 @@ export function problem4_1(input) {
             boardUnmarkedSum[boardNumber] -= calledNumber;
 
           // bingo!
-          if (set.size === 0)
-            return calledNumber * boardUnmarkedSum[boardNumber];
-        }
-      }
-    }
-  }
-}
-
-export function problem4_2(input) {
-  const { numbers, boards } = processInput(input);
-  const rowsColsSets = boardsToRowColSets(boards);
-  const boardUnmarkedSum = boardTotalSums(boards);
-  const activeBoards = new Set(Object.keys(boards));
-
-  for (let calledNumber of numbers) {
-    for (let boardNumber in rowsColsSets) {
-      // skip boards that have already won
-      if (!activeBoards.has(boardNumber)) continue;
-
-      for (let seriesType in rowsColsSets[boardNumber]) {
-        const series = rowsColsSets[boardNumber][seriesType];
-
-        for (let setIdx = 0; setIdx < series.length; setIdx++) {
-          const set = series[setIdx];
-
-          if (!set.has(calledNumber)) continue;
-          set.delete(calledNumber);
-          if (seriesType === "rows")
-            boardUnmarkedSum[boardNumber] -= calledNumber;
-
-          // bingo!
           if (set.size === 0) {
+            if (!lastBoardWins) {
+              return calledNumber * boardUnmarkedSum[boardNumber];
+            }
+
             // remove winning boards from active set
             activeBoards.delete(boardNumber);
 
@@ -142,4 +119,12 @@ export function problem4_2(input) {
       }
     }
   }
+};
+
+export function problem4_1(input) {
+  return winningBingoScore(input);
+}
+
+export function problem4_2(input) {
+  return winningBingoScore(input, true);
 }
