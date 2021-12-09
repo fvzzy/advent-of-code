@@ -5,6 +5,7 @@ import { problem3_1, problem3_2, title as title3 } from "./03.js";
 import { problem4_1, problem4_2, title as title4 } from "./04.js";
 import { problem5_1, problem5_2, title as title5 } from "./05.js";
 import { problem6_1, problem6_2, title as title6 } from "./06.js";
+import { problem7_1, problem7_2, title as title7 } from "./07.js";
 
 const solution = {
   1: { problem1: problem1_1, problem2: problem1_2, title: title1 },
@@ -13,6 +14,7 @@ const solution = {
   4: { problem1: problem4_1, problem2: problem4_2, title: title4 },
   5: { problem1: problem5_1, problem2: problem5_2, title: title5 },
   6: { problem1: problem6_1, problem2: problem6_2, title: title6 },
+  7: { problem1: problem7_1, problem2: problem7_2, title: title7 },
 };
 
 const day = process.argv.slice(2)[0];
