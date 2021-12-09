@@ -1,18 +1,16 @@
 export const day = 6;
 export const title = "lanternfish";
 
-const inputToFish = (input) => input[0].split(",").map(Number);
-
 const populationAfterDays = (input, days) => {
-  let stack = inputToFish(input);
+  let stack = input[0].replace(/,/g, "");
   while (days > 0) {
-    let nextStack = [];
+    let nextFish = "";
     while (stack.length) {
-      let fish = stack.shift();
-      const nextFish = fish === 0 ? [6, 8] : [--fish];
-      nextStack.push(...nextFish);
+      let fish = stack[0];
+      stack = stack.slice(1);
+      const nextFish = (nextFish += fish === "0" ? "68" : parseInt(fish) - 1);
     }
-    stack = nextStack;
+    stack = nextFish;
     days--;
   }
   return stack.length;
