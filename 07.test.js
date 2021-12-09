@@ -8,8 +8,8 @@ describe(`day ${day}: ${title}`, () => {
       expect(problem7_1(exampleInput)).toBe(37);
     });
 
-    // test("part 2 solution works", () => {
-    //   expect(problem7_2(exampleInput)).toBe(null);
-    // });
+    test("part 2 solution works", () => {
+      expect(problem7_2(exampleInput)).toBe(168);
+    });
   });
 });
