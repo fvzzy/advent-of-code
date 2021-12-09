@@ -1,20 +1,28 @@
 export const day = 6;
 export const title = "lanternfish";
 
-const inputToSchool = (input) => input[0].split(",").map(Number);
+const inputToFish = (input) => input[0].split(",").map(Number);
 
-const populationAfterDays = (school, days, currentDay = 0) => {
-  if (currentDay == days) return school.length;
-
-  let nextSchool = [];
-  for (let fish of school) {
-    fish === 0 ? nextSchool.push(6, 8) : nextSchool.push(fish - 1);
+const nextFish = (fish) => {
+  let newFish = 0;
+  for (let i = 0; i < fish.length; i++) {
+    fish[i] === 0 ? (fish[i] = 6) && newFish++ : (fish[i] -= 1);
   }
-  return populationAfterDays(nextSchool, days, currentDay + 1);
+
+  while (newFish > 0) fish.push(8) && newFish--;
+  newFish = 0;
+
+  return fish;
+};
+
+const populationAfterDays = (input, days) => {
+  let fish = inputToFish(input);
+  while (days > 0) (fish = nextFish(fish)) && days--;
+  return fish.length;
 };
 
 export function problem6_1(input) {
-  return populationAfterDays(inputToSchool(input), 80);
+  return populationAfterDays(input, 80);
 }
 
 export function problem6_2(input) {}
