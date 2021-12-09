@@ -9,7 +9,7 @@ describe(`day ${day}: ${title}`, () => {
     });
 
     test("part 2 solution works", () => {
-      expect(problem6_2(exampleInput)).toBe(undefined);
+      expect(problem6_2(exampleInput)).toBe(26984457539);
     });
   });
 });
