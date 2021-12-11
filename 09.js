@@ -1,10 +1,8 @@
 export const day = 9;
 export const title = "smoke basin";
 
-export function problem9_1(input) {
-  const heightMap = input.map((line) => line.split("").map(Number));
-
-  let riskLevelSum = 0;
+const findLowPoints = (heightMap) => {
+  let lowPoints = [];
   for (let y = 0; y < heightMap.length; y++) {
     for (let x = 0; x < heightMap[0].length; x++) {
       const currentHeight = heightMap[y][x];
@@ -20,12 +18,46 @@ export function problem9_1(input) {
         currentHeight < left &&
         currentHeight < right
       ) {
-        riskLevelSum += currentHeight + 1;
+        lowPoints.push({ x, y });
       }
     }
   }
+  return lowPoints;
+};
 
-  return riskLevelSum;
+export function problem9_1(input) {
+  const heightMap = input.map((line) => line.split("").map(Number));
+  const lowPoints = findLowPoints(heightMap);
+
+  return lowPoints.reduce(
+    (riskSum, point) => riskSum + heightMap[point.y][point.x] + 1,
+    0
+  );
 }
 
-export function problem9_2(input) {}
+export function problem9_2(input) {
+  const heightMap = input.map((line) => line.split("").map(Number));
+  const lowPoints = findLowPoints(heightMap);
+  let basins = [];
+  let size = 0;
+
+  const dfs = (y, x) => {
+    // stop counting if we're at a boundary, or a "peak" (9)
+    if (heightMap[y]?.[x] === undefined || heightMap[y]?.[x] === 9) return;
+    heightMap[y][x] = 9;
+    size++;
+    dfs(y - 1, x);
+    dfs(y + 1, x);
+    dfs(y, x - 1);
+    dfs(y, x + 1);
+  };
+
+  for (let point of lowPoints) {
+    dfs(point.y, point.x);
+    basins.push(size);
+    size = 0;
+  }
+
+  basins.sort((a, b) => b - a);
+  return basins[0] * basins[1] * basins[2];
+}
