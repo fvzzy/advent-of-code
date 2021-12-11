@@ -36,6 +36,17 @@ Choose a day and run `answers.js` (uses `-r dotenv/config` flag to read in your 
 npm run answers 1
 ```
 
+Will output something like:
+
+```
+> advent-of-code-2021@1.0.0 answers
+> node -r dotenv/config ./scripts/answers.js "1"
+
+--- day 1: sonar sweep ---
+part 1: 1553
+part 2: 1597
+```
+
 ### Tests
 
 I've added happy-path tests using the example inputs for all problems.
