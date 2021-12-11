@@ -22,30 +22,13 @@ export function problem8_1(input) {
   return count;
 }
 
-// 8.2 madness starts here
-
 const charDifference = (str1, str2) =>
   [...str1].filter((x) => !str2.includes(x)).length;
 
-const extract = (arr, matchFn) => {
-  const matchIdx = arr.findIndex(matchFn);
-  return arr.splice(matchIdx, 1)[0];
-};
+const isAnagram = (str1, str2) =>
+  str1.length === str2.length && charDifference(str1, str2) === 0;
 
-const isAnagram = (str1, str2) => {
-  if (str1.length !== str2.length) return false;
-  let charMap = {};
-  for (let i = 0; i < str1.length; i++) {
-    charMap[str1[i]] !== undefined
-      ? charMap[str1[i]]++
-      : (charMap[str1[i]] = 1);
-    charMap[str2[i]] !== undefined
-      ? charMap[str2[i]]--
-      : (charMap[str2[i]] = -1);
-  }
-  for (let key in charMap) if (charMap[key]) return false;
-  return true;
-};
+const extract = (arr, matchFn) => arr.splice(arr.findIndex(matchFn), 1)[0];
 
 const digitsByPattern = (patternsStr) => {
   let patterns = patternsStr.split(" ");
