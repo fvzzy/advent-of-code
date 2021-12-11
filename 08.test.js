@@ -19,8 +19,8 @@ describe(`day ${day}: ${title}`, () => {
       expect(problem8_1(exampleInput)).toBe(26);
     });
 
-    // test("part 2 solution works", () => {
-    //   expect(problem8_2(exampleInput)).toBe(undefined);
-    // });
+    test("part 2 solution works", () => {
+      expect(problem8_2(exampleInput)).toBe(61229);
+    });
   });
 });
