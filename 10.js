@@ -15,30 +15,71 @@ const closingParens = {
   ">": "<",
 };
 
-const firstIllegalChar = (str) => {
+const completionScore = {
+  ")": 1,
+  "]": 2,
+  "}": 3,
+  ">": 4,
+};
+
+const openingParens = {
+  "(": ")",
+  "[": "]",
+  "{": "}",
+  "<": ">",
+};
+
+const corruptOrIncompleteLineParts = (line) => {
   let stack = [];
-  for (let i = 0; i < str.length; i++) {
+  for (let i = 0; i < line.length; i++) {
     if (
-      closingParens[str[i]] &&
-      stack[stack.length - 1] === closingParens[str[i]]
+      closingParens[line[i]] &&
+      stack[stack.length - 1] === closingParens[line[i]]
     ) {
       stack.pop();
     } else {
-      stack.push(str[i]);
+      stack.push(line[i]);
     }
   }
 
-  for (let paren of stack) {
+  return stack;
+};
+
+const isCorrupted = (parens) => {
+  for (let paren of parens) {
+    if (closingParens[paren]) return true;
+  }
+  return false;
+};
+
+const firstIllegalChar = (parens) => {
+  for (let paren of parens) {
     if (closingParens[paren]) return paren;
   }
 };
 
-export function problem10_1(input) {
-  let syntaxErrorScore = 0;
-  for (let line of input) {
-    syntaxErrorScore += illegalCharScore[firstIllegalChar(line)] || 0;
+const autocompleteScore = (parens) => {
+  let score = 0;
+  for (let i = parens.length - 1; i >= 0; i--) {
+    score = score * 5 + completionScore[openingParens[parens[i]]];
   }
-  return syntaxErrorScore;
+  return score;
+};
+
+export function problem10_1(input) {
+  return input
+    .map(corruptOrIncompleteLineParts)
+    .filter(isCorrupted)
+    .map(firstIllegalChar)
+    .reduce((errorScore, paren) => errorScore + illegalCharScore[paren], 0);
 }
 
-export function problem10_2(input) {}
+export function problem10_2(input) {
+  const scores = input
+    .map(corruptOrIncompleteLineParts)
+    .filter((line) => !isCorrupted(line))
+    .map(autocompleteScore)
+    .sort((a, b) => a - b);
+
+  return scores[Math.floor(scores.length / 2)];
+}
