@@ -52,8 +52,10 @@ describe(`day ${day}: ${title}`, () => {
       expect(problem12_1(exampleInput3)).toBe(226);
     });
 
-    // test("part 2 solution works", () => {
-    //   expect(problem12_2(exampleInput)).toBe(undefined);
-    // });
+    test("part 2 solution works", () => {
+      expect(problem12_2(exampleInput1)).toBe(36);
+      expect(problem12_2(exampleInput2)).toBe(103);
+      expect(problem12_2(exampleInput3)).toBe(3509);
+    });
   });
 });

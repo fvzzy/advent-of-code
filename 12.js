@@ -17,23 +17,65 @@ const createAdjacencyList = (input) => {
   return result;
 };
 
-const isSmallCave = (cave) => cave === cave.toLowerCase() && cave !== "start";
+const isSmallCave = (cave) =>
+  cave === cave.toLowerCase() && cave !== "start" && cave !== "end";
+
+const mapPaths = ({
+  adjacencyList,
+  isInvalidVisitFn,
+  cave = "start",
+  path = "start",
+  paths = [],
+  smallCaveVisits = {},
+}) => {
+  // store counts of visits to small caves
+  if (isSmallCave(cave)) {
+    smallCaveVisits[cave]
+      ? smallCaveVisits[cave]++
+      : (smallCaveVisits[cave] = 1);
+  }
+
+  // exit the recursion if we're breaking the small cave visit rules
+  if (isInvalidVisitFn(smallCaveVisits)) return;
+
+  // push to our results array
+  if (cave === "end") return paths.push(path);
+
+  for (let nextCave of adjacencyList[cave]) {
+    const options = {
+      adjacencyList,
+      isInvalidVisitFn,
+      cave: nextCave,
+      path: `${path}-${nextCave}`,
+      paths,
+      smallCaveVisits: { ...smallCaveVisits },
+    };
+    mapPaths(options);
+  }
+
+  return paths;
+};
 
 export function problem12_1(input) {
   const adjacencyList = createAdjacencyList(input);
+  const isInvalidVisitFn = (smallCaveVisits) =>
+    Object.values(smallCaveVisits).some((visitCount) => visitCount > 1);
 
-  const mapPaths = (node = "start", path = "start", paths = []) => {
-    if (isSmallCave(node) && path.includes(`-${node}-`)) return;
-    if (node === "end") return paths.push(path);
-
-    for (let nextNode of adjacencyList[node]) {
-      mapPaths(nextNode, `${path}-${nextNode}`, paths);
-    }
-    return paths;
-  };
-
-  const paths = mapPaths();
+  const paths = mapPaths({ adjacencyList, isInvalidVisitFn });
   return paths.length;
 }
 
-export function problem12_2(input) {}
+export function problem12_2(input) {
+  const adjacencyList = createAdjacencyList(input);
+  const isInvalidVisitFn = (smallCaveVisits) => {
+    const backtrackedCaves = Object.values(smallCaveVisits).filter(
+      (visitCount) => visitCount > 1
+    );
+    const visitedAnyMoreThanOnce = backtrackedCaves.length > 1;
+    const visitedOneMoreThanTwice = backtrackedCaves.some((c) => c > 2);
+    return visitedAnyMoreThanOnce || visitedOneMoreThanTwice;
+  };
+
+  const paths = mapPaths({ adjacencyList, isInvalidVisitFn });
+  return paths.length;
+}
