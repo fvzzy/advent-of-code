@@ -49,7 +49,7 @@ part 2: 1597
 
 ### Tests
 
-I've added happy-path tests using the example inputs for all problems.
+I've added happy-path tests using the example inputs for all problems. Occasionally, for more complicated solutions, I've also added tests for helper functions.
 
 Run them with Jest:
 
