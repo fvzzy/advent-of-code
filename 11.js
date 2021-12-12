@@ -65,6 +65,12 @@ export const step = (octopi) => {
   return { octopi, flashes: flashed.size };
 };
 
-export function problem11_1(input) {}
+export function problem11_1(input) {
+  const octopi = octopiMap(input);
+  let steps = 100;
+  let flashes = 0;
+  while (steps--) flashes += step(octopi).flashes;
+  return flashes;
+}
 
 export function problem11_2(input) {}

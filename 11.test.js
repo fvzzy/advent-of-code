@@ -50,9 +50,9 @@ describe(`day ${day}: ${title}`, () => {
       "5283751526",
     ];
 
-    // test("part 1 solution works", () => {
-    //   expect(problem11_1(exampleInput)).toBe(1656);
-    // });
+    test("part 1 solution works", () => {
+      expect(problem11_1(exampleInput)).toBe(1656);
+    });
 
     // test("part 2 solution works", () => {
     //   expect(problem11_2(exampleInput)).toBe(undefined);
