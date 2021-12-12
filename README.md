@@ -14,7 +14,7 @@ This project uses a minimal set of dependencies:
 
 ### Fetching inputs
 
-I've included a small helper at [lib/utils.js](/lib/utils.js) to fetch and cache the supplied inputs for a given day.
+I've included a small helper at [lib/utils.js](/lib/utils.js) to fetch and cache the supplied inputs for a given day. Inputs are saved to `/inputs/{day}.txt`.
 
 Store a session token in `.env` to use it, e.g:
 
