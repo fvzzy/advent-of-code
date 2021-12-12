@@ -73,4 +73,9 @@ export function problem11_1(input) {
   return flashes;
 }
 
-export function problem11_2(input) {}
+export function problem11_2(input) {
+  const octopi = octopiMap(input);
+  let steps = 1;
+  while (step(octopi).flashes !== 100) steps++;
+  return steps;
+}
