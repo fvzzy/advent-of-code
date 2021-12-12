@@ -4,30 +4,31 @@ export const title = "passage pathing";
 const createAdjacencyList = (input) => {
   let result = {};
   for (let line of input) {
-    let [point1, point2] = line.split("-");
-    // swap the points if start and end are presented the wrong way around
-    if (point1 === "end" || point2 === "start")
-      [point1, point2] = [point2, point1];
-    // store the adjacent points in their presented directions
-    result[point1] ? result[point1].push(point2) : (result[point1] = [point2]);
-    // also store the reverse orders since our map is undirected
-    if (point1 === "start" || point2 === "end") continue;
-    result[point2] ? result[point2].push(point1) : (result[point2] = [point1]);
+    let [cave1, cave2] = line.split("-");
+    // swap the caves if start and end are presented the wrong way around
+    if (cave1 === "end" || cave2 === "start") [cave1, cave2] = [cave2, cave1];
+    // store the adjacent caves in their presented directions
+    result[cave1] ? result[cave1].push(cave2) : (result[cave1] = [cave2]);
+    // also store the reverse orders since our graph is undirected
+    if (cave1 === "start" || cave2 === "end") continue;
+    result[cave2] ? result[cave2].push(cave1) : (result[cave2] = [cave1]);
   }
   return result;
 };
 
 const isSmallCave = (cave) =>
-  cave === cave.toLowerCase() && cave !== "start" && cave !== "end";
+  cave !== "start" && cave !== "end" && cave === cave.toLowerCase();
 
-const mapPaths = ({
-  adjacencyList,
-  isInvalidVisitFn,
-  cave = "start",
-  path = "start",
-  paths = [],
-  smallCaveVisits = {},
-}) => {
+const mapPaths = (options) => {
+  const {
+    adjacencyList,
+    isInvalidVisitFn,
+    cave = "start",
+    path = "start",
+    paths = [],
+    smallCaveVisits = {},
+  } = options;
+
   // store counts of visits to small caves
   if (isSmallCave(cave)) {
     smallCaveVisits[cave]
@@ -35,10 +36,10 @@ const mapPaths = ({
       : (smallCaveVisits[cave] = 1);
   }
 
-  // exit the recursion if we're breaking the small cave visit rules
+  // exit the traversal if we're breaking the small cave visit rules
   if (isInvalidVisitFn(smallCaveVisits)) return;
 
-  // push to our results array
+  // save path and exit if we've reached an "end" cave
   if (cave === "end") return paths.push(path);
 
   for (let nextCave of adjacencyList[cave]) {
@@ -46,7 +47,7 @@ const mapPaths = ({
       adjacencyList,
       isInvalidVisitFn,
       cave: nextCave,
-      path: `${path}-${nextCave}`,
+      path: `${path},${nextCave}`,
       paths,
       smallCaveVisits: { ...smallCaveVisits },
     };
@@ -72,7 +73,7 @@ export function problem12_2(input) {
       (visitCount) => visitCount > 1
     );
     const visitedAnyMoreThanOnce = backtrackedCaves.length > 1;
-    const visitedOneMoreThanTwice = backtrackedCaves.some((c) => c > 2);
+    const visitedOneMoreThanTwice = backtrackedCaves.some((vc) => vc > 2);
     return visitedAnyMoreThanOnce || visitedOneMoreThanTwice;
   };
 
