@@ -80,5 +80,8 @@ export function problem13_1(input) {
   return countDots(paper);
 }
 
+export function problem13_2(input) {
+  const { dots, folds } = readInstructions(input);
+  let paper = markDots(dots);
+  return fold(paper, folds);
 }
-export function problem13_2(input) {}
