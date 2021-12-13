@@ -2,13 +2,7 @@ export const day = 8;
 export const title = "seven segment search";
 
 export function problem8_1(input) {
-  // JS array based solution
-  // return input
-  //   .map((line) => line.split(" | ")[1])
-  //   .join(" ")
-  //   .split(" ")
-  //   .filter((digit) => [2, 3, 4, 7].includes(digit.length)).length;
-
+  // get count with single pass over each input char
   let count = 0;
   for (let line = 0; line < input.length; line++) {
     let cursor = input[line].length - 1;
