@@ -43,12 +43,51 @@ export function problem14_1(input) {
 
   return maxElementCountDiff(counts);
 }
-  for (let element in counts) {
-    minFrequency = Math.min(minFrequency, counts[element]);
-    maxFrequency = Math.max(maxFrequency, counts[element]);
+
+export function problem14_2(input) {
+  const { polymer, rules } = instructions(input);
+
+  let pairFrequencies = {};
+  for (let i = 0; i < polymer.length - 1; i++) {
+    const pair = polymer[i] + polymer[i + 1];
+    pairFrequencies[pair]
+      ? pairFrequencies[pair]++
+      : (pairFrequencies[pair] = 1);
   }
 
-  return maxFrequency - minFrequency;
-}
+  let steps = 40;
+  while (steps--) {
+    let nextFrequencies = {};
 
-export function problem14_2(input) {}
+    for (let pair in pairFrequencies) {
+      const pairCount = pairFrequencies[pair];
+      const insert = rules[pair];
+      const mutation1 = pair[0] + insert;
+      const mutation2 = insert + pair[1];
+
+      if (!(mutation1 in nextFrequencies)) nextFrequencies[mutation1] = 0;
+      if (!(mutation2 in nextFrequencies)) nextFrequencies[mutation2] = 0;
+
+      nextFrequencies[mutation1] += pairCount;
+      nextFrequencies[mutation2] += pairCount;
+    }
+
+    pairFrequencies = { ...nextFrequencies };
+  }
+
+  let elementCounts = {};
+  for (let pair in pairFrequencies) {
+    if (!(pair[0] in elementCounts)) elementCounts[pair[0]] = 0;
+    if (!(pair[1] in elementCounts)) elementCounts[pair[1]] = 0;
+    elementCounts[pair[0]] += pairFrequencies[pair];
+    elementCounts[pair[1]] += pairFrequencies[pair];
+  }
+
+  // each of our elements is counted twice in each pair, so halve the counts
+  // round up to correct the first and last element in the polymer string being counted once
+  for (let element in elementCounts) {
+    elementCounts[element] = Math.round(elementCounts[element] / 2);
+  }
+
+  return maxElementCountDiff(counts);
+}
