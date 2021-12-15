@@ -1,8 +1,7 @@
 export const day = 15;
 export const title = "chiton";
 
-const adjacencyList = (input) => {
-  const caveMap = input.map((line) => line.split("").map(Number));
+const adjacencyList = (caveMap) => {
   const directions = [
     [0, -1],
     [0, 1],
@@ -81,10 +80,48 @@ const shortestPath = (graph, startNode, endNode) => {
   return distances[endNode];
 };
 
+const generateFullMap = (input, scale) => {
+  let map = input.map((line) => line.split("").map(Number));
+  const [partialWidth, partialHeight] = [map[0].length, map.length];
+
+  // fill across
+  for (let y = 0; y < partialWidth; y++) {
+    for (let x = 0; x < partialHeight; x++) {
+      let xy = map[y][x];
+      for (let expansion = 1; expansion < scale; expansion++) {
+        xy = xy === 9 ? 1 : xy + 1;
+        map[y][expansion * partialWidth + x] = xy;
+      }
+    }
+  }
+
+  // fill down
+  for (let x = 0; x < map[0].length; x++) {
+    for (let y = 0; y < partialHeight; y++) {
+      let xy = map[y][x];
+      for (let expansion = 1; expansion < scale; expansion++) {
+        xy = xy === 9 ? 1 : xy + 1;
+        if (!map[expansion * partialHeight + y])
+          map[expansion * partialHeight + y] = [];
+        map[expansion * partialHeight + y][x] = xy;
+      }
+    }
+  }
+
+  return map;
+};
+
 export function problem15_1(input) {
-  const graph = adjacencyList(input);
+  const caveMap = input.map((line) => line.split("").map(Number));
+  const graph = adjacencyList(caveMap);
   const endNode = `${input[0].length - 1}_${input.length - 1}`;
   return shortestPath(graph, "0_0", endNode);
 }
 
-export function problem15_2(input) {}
+export function problem15_2(input) {
+  const scale = 5;
+  const fullMap = generateFullMap(input, scale);
+  const graph = adjacencyList(fullMap);
+  const endNode = `${input[0].length * scale - 1}_${input.length * scale - 1}`;
+  return shortestPath(graph, "0_0", endNode);
+}
