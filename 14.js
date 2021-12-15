@@ -1,8 +1,9 @@
 export const day = 14;
 export const title = "extended polymerization";
 
-const instructions = (input) => {
+const processInstructions = (input) => {
   const polymer = input[0];
+
   let rules = {};
   for (let line = 2; line < input.length; line++) {
     const [pair, insert] = input[line].split(" -> ");
@@ -15,6 +16,7 @@ const instructions = (input) => {
 const maxElementCountDiff = (counts) => {
   let minFrequency = Infinity;
   let maxFrequency = -Infinity;
+
   for (let element in counts) {
     minFrequency = Math.min(minFrequency, counts[element]);
     maxFrequency = Math.max(maxFrequency, counts[element]);
@@ -24,11 +26,12 @@ const maxElementCountDiff = (counts) => {
 };
 
 export function problem14_1(input) {
-  const { polymer: _polymer, rules } = instructions(input);
+  const { polymer: _polymer, rules } = processInstructions(input);
   let polymer = _polymer;
 
-  let steps = 10;
-  while (steps--) {
+  // naive solution to calculate the resultant polymer
+  // constrained by memory to ~32 steps
+  for (let step = 0; step < 10; step++) {
     let nextPolymer = "";
     for (let i = 0; i < polymer.length - 1; i++) {
       nextPolymer += polymer[i] + rules[`${polymer[i]}${polymer[i + 1]}`];
@@ -45,8 +48,9 @@ export function problem14_1(input) {
 }
 
 export function problem14_2(input) {
-  const { polymer, rules } = instructions(input);
+  const { polymer, rules } = processInstructions(input);
 
+  // save frequency counts of each pair of characters
   let pairFrequencies = {};
   for (let i = 0; i < polymer.length - 1; i++) {
     const pair = polymer[i] + polymer[i + 1];
@@ -55,11 +59,12 @@ export function problem14_2(input) {
       : (pairFrequencies[pair] = 1);
   }
 
-  let steps = 40;
-  while (steps--) {
+  for (let step = 0; step < 40; step++) {
     let nextFrequencies = {};
 
     for (let pair in pairFrequencies) {
+      // at each step, each pair "mutates" into a triplet,
+      // or a set of two new pairs with the same frequency
       const pairCount = pairFrequencies[pair];
       const insert = rules[pair];
       const mutation1 = pair[0] + insert;
@@ -67,7 +72,6 @@ export function problem14_2(input) {
 
       if (!(mutation1 in nextFrequencies)) nextFrequencies[mutation1] = 0;
       if (!(mutation2 in nextFrequencies)) nextFrequencies[mutation2] = 0;
-
       nextFrequencies[mutation1] += pairCount;
       nextFrequencies[mutation2] += pairCount;
     }
@@ -75,6 +79,7 @@ export function problem14_2(input) {
     pairFrequencies = { ...nextFrequencies };
   }
 
+  // reprocess our frequency map as counts of individual elements in each pair
   let elementCounts = {};
   for (let pair in pairFrequencies) {
     if (!(pair[0] in elementCounts)) elementCounts[pair[0]] = 0;
@@ -89,5 +94,5 @@ export function problem14_2(input) {
     elementCounts[element] = Math.round(elementCounts[element] / 2);
   }
 
-  return maxElementCountDiff(counts);
+  return maxElementCountDiff(elementCounts);
 }
