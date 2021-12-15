@@ -13,12 +13,12 @@ const adjacencyList = (input) => {
   let adjacencyList = {};
   for (let y = 0; y < caveMap.length; y++) {
     for (let x = 0; x < caveMap[0].length; x++) {
-      const node = `${x}${y}`;
+      const node = `${x}_${y}`;
       adjacencyList[node] = {};
 
       for (let [shiftX, shiftY] of directions) {
         const [adjX, adjY] = [shiftX + x, shiftY + y];
-        const adjKey = `${adjX}${adjY}`;
+        const adjKey = `${adjX}_${adjY}`;
         if (caveMap[adjY]?.[adjX])
           adjacencyList[node][adjKey] = caveMap[adjY][adjX];
       }
@@ -83,8 +83,8 @@ const shortestPath = (graph, startNode, endNode) => {
 
 export function problem15_1(input) {
   const graph = adjacencyList(input);
-  const endNode = `${input[0].length - 1}${input.length - 1}`;
-  return shortestPath(graph, "00", endNode);
+  const endNode = `${input[0].length - 1}_${input.length - 1}`;
+  return shortestPath(graph, "0_0", endNode);
 }
 
 export function problem15_2(input) {}
