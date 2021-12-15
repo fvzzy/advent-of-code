@@ -43,11 +43,6 @@ const shortestPath = (graph, startNode, endNode) => {
   distances[endNode] = Infinity;
   distances = { ...distances, ...graph[startNode] };
 
-  let parents = {};
-  for (let node in graph[startNode]) {
-    parents[node] = startNode;
-  }
-
   let visited = new Set();
   let node = nearestNeighbour(distances, visited);
 
@@ -59,23 +54,13 @@ const shortestPath = (graph, startNode, endNode) => {
       if (n === startNode) continue;
       let newDistance = distance + neighbours[n];
       if (!distances[n] || distances[n] > newDistance) {
-        // assign a new distance and parent for this neighbour
         distances[n] = newDistance;
-        parents[n] = node;
       }
     }
 
     visited.add(node);
     node = nearestNeighbour(distances, visited);
   }
-
-  let path = [endNode];
-  let parent = parents[endNode];
-  while (parent) {
-    path.push(parent);
-    parent = parents[parent];
-  }
-  path.reverse();
 
   return distances[endNode];
 };
