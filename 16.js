@@ -26,6 +26,9 @@ export const hexToPacket = (hexString) => {
   return packet;
 };
 
+const stripBitsAndParseInt = (bits, count) =>
+  parseInt(bits.splice(0, count).join(""), 2);
+
 const bitsToLiteralValue = (bits) => {
   while (bits.length % 5 !== 0) bits.pop();
   let loops = bits.length / 5;
@@ -40,14 +43,56 @@ const bitsToLiteralValue = (bits) => {
   return parseInt(literalValueBinary, 2);
 };
 
-export const interpretPacket = (packet) => {
-  let bits = packet.split("");
+const parseOperatorPacket = (bits) => {
+  let lengthTypeId = bits.splice(0, 1)[0];
+  let subpackets = [];
+  if (lengthTypeId === "0") {
+    const subpacketsLength = stripBitsAndParseInt(bits, 15);
+    let savedBits = 0;
+    // split subpackets, starting at 6 to account for the packet header
+    let bit = 6;
+    while (savedBits < subpacketsLength) {
+      if (bits[(bit += 5)] === "1") continue;
+      let subpacket = bits.splice(0, bit).join("");
+      subpackets.push(subpacket);
+      savedBits += subpacket.length;
+    }
+  } else if (lengthTypeId === "1") {
+    let numberSubpackets = stripBitsAndParseInt(bits, 11);
+    for (let i = 0; i < numberSubpackets; i++) {
+      subpackets.push(bits.splice(0, 11).join(""));
+    }
+  }
+  return subpackets;
+};
+
+const stripVersionAndTypeId = (bits) => {
   let version = parseInt(bits.splice(0, 3).join(""), 2);
   let typeId = parseInt(bits.splice(0, 3).join(""), 2);
+  return { version, typeId };
+};
+
+export const interpretPacket = (packet, result = []) => {
+  let bits = packet.split("");
+  let { version, typeId } = stripVersionAndTypeId(bits);
 
   if (typeId === 4) {
-    return bitsToLiteralValue(bits);
+    // literal
+    result.push({ version, typeId, value: bitsToLiteralValue(bits) });
+  } else {
+    // operator packet
+    let subpackets = parseOperatorPacket(bits);
+    for (let subpacket of subpackets) {
+      if (!result.packets) result.packets = [];
+      result = {
+        version,
+        typeId,
+        packets: [...result.packets, ...interpretPacket(subpacket)],
+      };
+    }
   }
+
+  return result;
 };
 
 export function problem16_1(input) {}
