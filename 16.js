@@ -46,6 +46,7 @@ const bitsToLiteralValue = (bits) => {
 const parseOperatorPacket = (bits) => {
   let lengthTypeId = bits.splice(0, 1)[0];
   let subpackets = [];
+
   if (lengthTypeId === "0") {
     const subpacketsLength = stripBitsAndParseInt(bits, 15);
     let savedBits = 0;
@@ -58,9 +59,17 @@ const parseOperatorPacket = (bits) => {
       savedBits += subpacket.length;
     }
   } else if (lengthTypeId === "1") {
-    let numberSubpackets = stripBitsAndParseInt(bits, 11);
-    for (let i = 0; i < numberSubpackets; i++) {
-      subpackets.push(bits.splice(0, 11).join(""));
+    let totalSubpackets = stripBitsAndParseInt(bits, 11);
+    // assuming we always have complete subpackets we can start at 11 (header + bit)
+    let bit = 6;
+    while (subpackets.length < totalSubpackets) {
+      if (bits[bit] === "1") {
+        bit += 5;
+      } else {
+        let subpacket = bits.splice(0, bit + 5).join("");
+        subpackets.push(subpacket);
+        bit = 6;
+      }
     }
   }
   return subpackets;
