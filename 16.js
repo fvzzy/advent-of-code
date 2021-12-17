@@ -26,84 +26,73 @@ export const hexToPacket = (hexString) => {
   return packet;
 };
 
-const stripBitsAndParseInt = (bits, count) =>
-  parseInt(bits.splice(0, count).join(""), 2);
+export const interpretPacket = (packet, cursor = 0) => {
+  const readBits = (count) => {
+    cursor += count;
+    return bits.slice(cursor - count, cursor);
+  };
 
-const bitsToLiteralValue = (bits) => {
-  while (bits.length % 5 !== 0) bits.pop();
-  let loops = bits.length / 5;
-  let valueBinaryParts = [];
-  while (loops--) {
-    valueBinaryParts.push(bits.splice(0, 5));
-  }
-  const literalValueBinary = valueBinaryParts
-    .map((bits) => bits.slice(1).join(""))
-    .join("");
+  const readBitsAndParse = (count) => parseInt(readBits(count).join(""), 2);
 
-  return parseInt(literalValueBinary, 2);
-};
-
-const parseOperatorPacket = (bits) => {
-  let lengthTypeId = bits.splice(0, 1)[0];
-  let subpackets = [];
-
-  if (lengthTypeId === "0") {
-    const subpacketsLength = stripBitsAndParseInt(bits, 15);
-    let savedBits = 0;
-    // split subpackets, starting at 6 to account for the packet header
-    let bit = 6;
-    while (savedBits < subpacketsLength) {
-      if (bits[(bit += 5)] === "1") continue;
-      let subpacket = bits.splice(0, bit).join("");
-      subpackets.push(subpacket);
-      savedBits += subpacket.length;
-    }
-  } else if (lengthTypeId === "1") {
-    let totalSubpackets = stripBitsAndParseInt(bits, 11);
-    // assuming we always have complete subpackets we can start at 11 (header + bit)
-    let bit = 6;
-    while (subpackets.length < totalSubpackets) {
-      if (bits[bit] === "1") {
-        bit += 5;
-      } else {
-        let subpacket = bits.splice(0, bit + 5).join("");
-        subpackets.push(subpacket);
-        bit = 6;
-      }
-    }
-  }
-  return subpackets;
-};
-
-const stripVersionAndTypeId = (bits) => {
-  let version = parseInt(bits.splice(0, 3).join(""), 2);
-  let typeId = parseInt(bits.splice(0, 3).join(""), 2);
-  return { version, typeId };
-};
-
-export const interpretPacket = (packet, result = []) => {
   let bits = packet.split("");
-  let { version, typeId } = stripVersionAndTypeId(bits);
+  const version = readBitsAndParse(3);
+  const typeId = readBitsAndParse(3);
 
   if (typeId === 4) {
-    // literal
-    result.push({ version, typeId, value: bitsToLiteralValue(bits) });
+    // literal value
+    let subpacket = "";
+    let keepReading = true;
+    while (bits[cursor] !== "0" || keepReading) {
+      if (bits[cursor] === "0") keepReading = false;
+      subpacket += readBits(5).slice(1).join("");
+      if (!keepReading) break;
+    }
+    const literalValue = parseInt(subpacket, 2);
+    return {
+      version,
+      typeId,
+      value: literalValue,
+    };
   } else {
-    // operator packet
-    let subpackets = parseOperatorPacket(bits);
-    for (let subpacket of subpackets) {
-      if (!result.packets) result.packets = [];
-      result = {
-        version,
-        typeId,
-        packets: [...result.packets, ...interpretPacket(subpacket)],
-      };
+    // operator
+    let lengthTypeId = readBits(1)[0];
+
+    if (lengthTypeId === "0") {
+      // next 15 bits are a number that represents the total length in bits
+      // of the sub-packets contained by this packet
+      let subpacketsLength = readBitsAndParse(15);
+      let subpackets = readBits(subpacketsLength).join("");
+      while (subpacketsLength > 0) {
+        const subpacket = interpretPacket(subpackets);
+        subpacketsLength -= subpacket.length;
+      }
+    } else if (lengthTypeId === "1") {
+      // next 11 bits are a number that represents the number of sub-packets
+      // immediately contained by this packet
+      // let totalSubpackets = readBitsAndParse(11);
+      // let bit = 6;
+      // while (subpackets.length < totalSubpackets) {
+      //   if (bits[bit] === "1") {
+      //     bit += 5;
+      //   } else {
+      //     let subpacket = bits.splice(0, bit + 5).join("");
+      //     subpackets.push(subpacket);
+      //     bit = 6;
+      //   }
+      // }
     }
   }
 
   return result;
 };
 
-export function problem16_1(input) {}
+const decodeTransmission = (hexString) => {
+  const packet = hexToPacket(hexString);
+  return interpretPacket(packet);
+};
+
+export function problem16_1(input) {
+  return decodeTransmission(input);
+}
 
 export function problem16_2(input) {}
