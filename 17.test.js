@@ -8,8 +8,8 @@ describe(`day ${day}: ${title}`, () => {
       expect(problem17_1(exampleInput)).toBe(45);
     });
 
-    // test("part 2 solution works", () => {
-    //   expect(problem17_2(exampleInput)).toBe(undefined);
-    // });
+    test("part 2 solution works", () => {
+      expect(problem17_2(exampleInput)).toStrictEqual(112);
+    });
   });
 });

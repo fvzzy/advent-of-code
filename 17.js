@@ -31,28 +31,38 @@ const fireProbe = (vx, vy, targetArea) => {
     maxY = Math.max(maxY, y);
 
     if (probeBeyondTarget(x, y, vx, vy, targetArea)) {
-      return -Infinity;
+      return null;
     }
   }
 
   return maxY;
 };
 
-export function problem17_1(input) {
-  const targetArea = parseTargetArea(input);
-  let maxHeight = -Infinity;
+const spamProbes = (targetArea) => {
+  let maxHeightOverall = -Infinity;
+  let validShots = 0;
 
-  let vy = Math.abs(targetArea[2]); // on the way down, if the probe is moving faster than this it'll miss the target
-  while (vy >= 0) {
+  let vy = Math.abs(targetArea[2]); // on the downward trajectory, if the probe is moving faster than this it'll miss the target
+  while (vy >= targetArea[2]) {
     let vx = 0;
-    while (vx <= 100) {
-      maxHeight = Math.max(fireProbe(vx, vy, targetArea), maxHeight);
+    while (vx <= 200) {
+      const maxHeight = fireProbe(vx, vy, targetArea);
+      maxHeightOverall = Math.max(maxHeightOverall, maxHeight);
+      if (maxHeight !== null) validShots += 1;
       vx += 1;
     }
     vy -= 1;
   }
 
-  return maxHeight;
+  return { maxHeight: maxHeightOverall, validShots };
+};
+
+export function problem17_1(input) {
+  const targetArea = parseTargetArea(input);
+  return spamProbes(targetArea).maxHeight;
 }
 
-export function problem17_2(input) {}
+export function problem17_2(input) {
+  const targetArea = parseTargetArea(input);
+  return spamProbes(targetArea).validShots;
+}
