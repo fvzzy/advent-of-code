@@ -70,26 +70,22 @@ export const interpretPacket = (packet, cursor = 0) => {
         cursor += subpacket.length;
         subpacketsBits -= subpacket.length;
       }
-      return {
-        version,
-        typeId,
-        subpackets,
-      };
     } else if (lengthTypeId === "1") {
       // next 11 bits are a number that represents the number of sub-packets
       // immediately contained by this packet
-      // let totalSubpackets = readBitsAndParse(11);
-      // let bit = 6;
-      // while (subpackets.length < totalSubpackets) {
-      //   if (bits[bit] === "1") {
-      //     bit += 5;
-      //   } else {
-      //     let subpacket = bits.splice(0, bit + 5).join("");
-      //     subpackets.push(subpacket);
-      //     bit = 6;
-      //   }
-      // }
+      let totalSubpackets = readBitsAndParse(11);
+      while (subpackets.length < totalSubpackets) {
+        const subpacket = interpretPacket(packet, cursor);
+        subpackets.push(subpacket);
+        cursor += subpacket.length;
+      }
     }
+
+    return {
+      version,
+      typeId,
+      subpackets,
+    };
   }
 };
 

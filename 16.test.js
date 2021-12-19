@@ -40,6 +40,19 @@ describe(`day ${day}: ${title}`, () => {
           { version: 2, typeId: 4, value: 20, length: 16 },
         ],
       });
+      expect(
+        interpretPacket(
+          "11101110000000001101010000001100100000100011000001100000"
+        )
+      ).toStrictEqual({
+        version: 7,
+        typeId: 3,
+        subpackets: [
+          { version: 2, typeId: 4, value: 1, length: 11 },
+          { version: 4, typeId: 4, value: 2, length: 11 },
+          { version: 1, typeId: 4, value: 3, length: 11 },
+        ],
+      });
     });
   });
 
