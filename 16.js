@@ -94,6 +94,12 @@ const decodeTransmission = (hexString) => {
   return interpretPacket(packet);
 };
 
+const sum = (arr) => arr.reduce((curr, sum) => curr + sum, 0);
+
+const sumProperty = (prop) => (packet) =>
+  packet[prop] +
+  (packet.subpackets ? sum(packet.subpackets.map(sumProperty(prop))) : 0);
+
 export function problem16_1(input) {
   return decodeTransmission(input);
 }
