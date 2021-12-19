@@ -22,9 +22,12 @@ describe(`day ${day}: ${title}`, () => {
 
   describe("#intepretPacket", () => {
     test("returns the parsed packet and nested packets", () => {
-      expect(interpretPacket("110100101111111000101000")).toStrictEqual([
-        { version: 6, typeId: 4, value: 2021 },
-      ]);
+      expect(interpretPacket("110100101111111000101000")).toStrictEqual({
+        version: 6,
+        typeId: 4,
+        value: 2021,
+        length: 21,
+      });
       expect(
         interpretPacket(
           "00111000000000000110111101000101001010010001001000000000"
@@ -32,22 +35,9 @@ describe(`day ${day}: ${title}`, () => {
       ).toStrictEqual({
         version: 1,
         typeId: 6,
-        packets: [
-          { version: 6, typeId: 4, value: 10 },
-          { version: 2, typeId: 4, value: 20 },
-        ],
-      });
-      expect(
-        interpretPacket(
-          "11101110000000001101010000001100100000100011000001100000"
-        )
-      ).toStrictEqual({
-        version: 7,
-        typeId: 3,
-        packets: [
-          { version: 2, typeId: 4, value: 1 },
-          { version: 4, typeId: 4, value: 2 },
-          { version: 1, typeId: 4, value: 3 },
+        subpackets: [
+          { version: 6, typeId: 4, value: 10, length: 11 },
+          { version: 2, typeId: 4, value: 20, length: 16 },
         ],
       });
     });

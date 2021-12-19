@@ -34,6 +34,7 @@ export const interpretPacket = (packet, cursor = 0) => {
 
   const readBitsAndParse = (count) => parseInt(readBits(count).join(""), 2);
 
+  let initialCursor = cursor;
   let bits = packet.split("");
   const version = readBitsAndParse(3);
   const typeId = readBitsAndParse(3);
@@ -52,20 +53,28 @@ export const interpretPacket = (packet, cursor = 0) => {
       version,
       typeId,
       value: literalValue,
+      length: cursor - initialCursor,
     };
   } else {
     // operator
     let lengthTypeId = readBits(1)[0];
+    let subpackets = [];
 
     if (lengthTypeId === "0") {
       // next 15 bits are a number that represents the total length in bits
       // of the sub-packets contained by this packet
-      let subpacketsLength = readBitsAndParse(15);
-      let subpackets = readBits(subpacketsLength).join("");
-      while (subpacketsLength > 0) {
-        const subpacket = interpretPacket(subpackets);
-        subpacketsLength -= subpacket.length;
+      let subpacketsBits = readBitsAndParse(15);
+      while (subpacketsBits > 0) {
+        const subpacket = interpretPacket(packet, cursor);
+        subpackets.push(subpacket);
+        cursor += subpacket.length;
+        subpacketsBits -= subpacket.length;
       }
+      return {
+        version,
+        typeId,
+        subpackets,
+      };
     } else if (lengthTypeId === "1") {
       // next 11 bits are a number that represents the number of sub-packets
       // immediately contained by this packet
@@ -82,8 +91,6 @@ export const interpretPacket = (packet, cursor = 0) => {
       // }
     }
   }
-
-  return result;
 };
 
 const decodeTransmission = (hexString) => {
