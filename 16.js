@@ -85,6 +85,7 @@ export const interpretPacket = (packet, cursor = 0) => {
       version,
       typeId,
       subpackets,
+      length: cursor - initialCursor,
     };
   }
 };
@@ -94,14 +95,15 @@ const decodeTransmission = (hexString) => {
   return interpretPacket(packet);
 };
 
-const sum = (arr) => arr.reduce((curr, sum) => curr + sum, 0);
+const sum = (arr) => arr.reduce((sum, curr) => curr + sum, 0);
 
 const sumProperty = (prop) => (packet) =>
   packet[prop] +
   (packet.subpackets ? sum(packet.subpackets.map(sumProperty(prop))) : 0);
 
 export function problem16_1(input) {
-  return decodeTransmission(input);
+  const transmission = decodeTransmission(input[0]);
+  return sumProperty("version")(transmission);
 }
 
 export function problem16_2(input) {}

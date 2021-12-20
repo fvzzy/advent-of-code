@@ -39,6 +39,7 @@ describe(`day ${day}: ${title}`, () => {
           { version: 6, typeId: 4, value: 10, length: 11 },
           { version: 2, typeId: 4, value: 20, length: 16 },
         ],
+        length: 49,
       });
       expect(
         interpretPacket(
@@ -52,25 +53,21 @@ describe(`day ${day}: ${title}`, () => {
           { version: 4, typeId: 4, value: 2, length: 11 },
           { version: 1, typeId: 4, value: 3, length: 11 },
         ],
+        length: 51,
       });
     });
   });
 
   describe("example inputs", () => {
-    const exampleInput1 = "8A004A801A8002F478";
-    const exampleInput2 = "620080001611562C8802118E34";
-    const exampleInput3 = "C0015000016115A2E0802F182340";
-    const exampleInput4 = "A0016C880162017C3686B18A3D4780";
-
     test("part 1 solution works", () => {
-      // expect(problem16_1(exampleInput1)).toBe(16);
-      // expect(problem16_1(exampleInput2)).toBe(12);
-      // expect(problem16_1(exampleInput3)).toBe(23);
-      // expect(problem16_1(exampleInput4)).toBe(31);
+      expect(problem16_1(["8A004A801A8002F478"])).toBe(16);
+      expect(problem16_1(["620080001611562C8802118E34"])).toBe(12);
+      expect(problem16_1(["C0015000016115A2E0802F182340"])).toBe(23);
+      expect(problem16_1(["A0016C880162017C3686B18A3D4780"])).toBe(31);
     });
 
-    test("part 2 solution works", () => {
-      // expect(problem16_2(exampleInput)).toBe(undefined);
-    });
+    //   test("part 2 solution works", () => {
+    //     // expect(problem16_2(exampleInput)).toBe(undefined);
+    //   });
   });
 });
