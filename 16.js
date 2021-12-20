@@ -95,15 +95,39 @@ const decodeTransmission = (hexString) => {
   return interpretPacket(packet);
 };
 
-const sum = (arr) => arr.reduce((sum, curr) => curr + sum, 0);
-
-const sumProperty = (prop) => (packet) =>
-  packet[prop] +
-  (packet.subpackets ? sum(packet.subpackets.map(sumProperty(prop))) : 0);
+const evaluatePacket = (packet) => {
+  const { typeId, subpackets: sp, value } = packet;
+  switch (typeId) {
+    case 4:
+      return value;
+    case 0:
+      return sp.reduce((sum, p) => evaluatePacket(p) + sum, 0);
+    case 1:
+      return sp.reduce((product, p) => evaluatePacket(p) * product, 1);
+    case 2:
+      return sp.reduce((min, p) => Math.min(evaluatePacket(p), min), Infinity);
+    case 3:
+      return sp.reduce((max, p) => Math.max(evaluatePacket(p), max), -Infinity);
+    case 5:
+      return evaluatePacket(sp[0]) > evaluatePacket(sp[1]) ? 1 : 0;
+    case 6:
+      return evaluatePacket(sp[0]) < evaluatePacket(sp[1]) ? 1 : 0;
+    case 7:
+      return evaluatePacket(sp[0]) === evaluatePacket(sp[1]) ? 1 : 0;
+  }
+};
 
 export function problem16_1(input) {
+  const sum = (arr) => arr.reduce((sum, curr) => curr + sum, 0);
+  const sumProperty = (prop) => (packet) =>
+    packet[prop] +
+    (packet.subpackets ? sum(packet.subpackets.map(sumProperty(prop))) : 0);
+
   const transmission = decodeTransmission(input[0]);
   return sumProperty("version")(transmission);
 }
 
-export function problem16_2(input) {}
+export function problem16_2(input) {
+  const transmission = decodeTransmission(input[0]);
+  return evaluatePacket(transmission);
+}

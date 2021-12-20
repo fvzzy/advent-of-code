@@ -66,8 +66,15 @@ describe(`day ${day}: ${title}`, () => {
       expect(problem16_1(["A0016C880162017C3686B18A3D4780"])).toBe(31);
     });
 
-    //   test("part 2 solution works", () => {
-    //     // expect(problem16_2(exampleInput)).toBe(undefined);
-    //   });
+    test("part 2 solution works", () => {
+      expect(problem16_2(["C200B40A82"])).toBe(3);
+      expect(problem16_2(["04005AC33890"])).toBe(54);
+      expect(problem16_2(["880086C3E88112"])).toBe(7);
+      expect(problem16_2(["CE00C43D881120"])).toBe(9);
+      expect(problem16_2(["D8005AC2A8F0"])).toBe(1);
+      expect(problem16_2(["F600BC2D8F"])).toBe(0);
+      expect(problem16_2(["9C005AC2F8F0"])).toBe(0);
+      expect(problem16_2(["9C0141080250320F1802104A08"])).toBe(1);
+    });
   });
 });
