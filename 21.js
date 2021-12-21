@@ -32,41 +32,47 @@ export function problem21_1(input) {
 }
 
 export function problem21_2(input) {
-  let possibleDiceTotals = [
-    3, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 8, 8,
-    8, 9,
-  ];
-  let p1Wins = 0;
-  let p2Wins = 0;
-
-  const takeTurn = (p1, p2, p1Score, p2Score, p1Turn) => {
-    if (p1Score >= 21) return p1Wins++;
-    if (p2Score >= 21) return p2Wins++;
-    if (p1Turn) {
-      for (let roll of possibleDiceTotals) {
-        takeTurn(
-          next(p1, roll),
-          p2,
-          p1Score + next(p1, roll),
-          p2Score,
-          !p1Turn
-        );
-      }
-    } else {
-      for (let roll of possibleDiceTotals) {
-        takeTurn(
-          p1,
-          next(p2, roll),
-          p1Score,
-          p2Score + next(p2, roll),
-          !p1Turn
-        );
-      }
-    }
+  const rolls = {
+    3: 1, // [1,1,1]
+    4: 3, // [1,1,2], [1,2,1], [2,1,1]
+    5: 6, // [1,1,3], [1,3,1], [3,1,1], [2,2,3], [2,3,2], [3,2,2]
+    6: 7, // [1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,2,1], [3,1,2], [2,2,2]
+    7: 6, // [1,3,3], [3,1,3], [3,3,1], [2,2,3], [2,3,2], [3,2,2]
+    8: 3, // [2,3,3], [3,2,3], [3,3,2]
+    9: 1, // [3,3,3]
   };
 
-  let { p1, p2 } = startingPositions(input);
-  takeTurn(p1, p2, 0, 0, true);
+  let cache = new Map();
 
-  return Math.max(p1Wins, p2Wins);
+  const takeTurn = (p1, p2, p1Score, p2Score, combos, p1Turn) => {
+    if (p1Score >= 21) return [combos, 0];
+    if (p2Score >= 21) return [0, combos];
+
+    const key = [p1, p2, p1Score, p2Score, p1Turn].join("-");
+    const cached = cache.get(key);
+    if (cached) return cached;
+
+    let wins = [0, 0];
+
+    for (let [dice, combos] of Object.entries(rolls)) {
+      const [p1Wins, p2Wins] = takeTurn(
+        p1Turn ? next(p1, dice) : p1,
+        p1Turn ? p2 : next(p2, dice),
+        p1Turn ? p1Score + next(p1, dice) : p1Score,
+        p1Turn ? p2Score : p2Score + next(p2, dice),
+        combos,
+        !p1Turn
+      );
+      wins[0] += p1Wins;
+      wins[1] += p2Wins;
+    }
+
+    cache.set(key, wins);
+    return wins;
+  };
+
+  const { p1, p2 } = startingPositions(input);
+  let wins = takeTurn(p1, p2, 0, 0, 0, true);
+
+  return Math.max(...wins);
 }
