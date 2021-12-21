@@ -89,4 +89,11 @@ export function problem20_1(input) {
   return countLit(image);
 }
 
-export function problem20_2(input) {}
+export function problem20_2(input) {
+  let { algorithm, image } = processInput(input);
+  for (let i = 0; i < 50; i++) {
+    image = enhance(image, algorithm, i);
+  }
+
+  return countLit(image);
+}
