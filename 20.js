@@ -7,7 +7,7 @@ const processInput = (input) => {
   return { algorithm, image };
 };
 
-const pixelValue = (x, y, image, algorithm) => {
+const pixelValue = (x, y, image, algorithm, step) => {
   const adjacentPixels = [
     [-1, -1],
     [0, -1],
@@ -22,18 +22,27 @@ const pixelValue = (x, y, image, algorithm) => {
 
   let binary = "";
   for (let [adjX, adjY] of adjacentPixels) {
-    binary += image[y + adjY][x + adjX] === "#" ? 1 : 0;
+    if (
+      y + adjY < 0 ||
+      y + adjY >= image.length ||
+      x + adjX < 0 ||
+      x + adjX >= image[0].length
+    ) {
+      binary += step % 2 === 0 ? 0 : 1;
+    } else {
+      binary += image[y + adjY][x + adjX] === "#" ? 1 : 0;
+    }
   }
 
   return algorithm[parseInt(binary, 2)];
 };
 
-const expand = (image) => {
+const expand = (image, step) => {
   const newWidth = image.length + 4;
   const newHeight = image[0].length + 4;
   let result = Array(newHeight)
     .fill()
-    .map(() => Array(newWidth).fill("."));
+    .map(() => Array(newWidth).fill(step % 2 === 0 ? "." : "#"));
 
   for (let y = 0; y < image.length; y++) {
     for (let x = 0; x < image[0].length; x++) {
@@ -43,38 +52,40 @@ const expand = (image) => {
   return result;
 };
 
-const enhance = (image, algorithm) => {
-  let enhancedImage = expand(image);
+const enhance = (image, algorithm, step) => {
+  let expandedImage = expand(image, step);
   let resultPixels = {};
 
-  for (let y = 1; y < enhancedImage.length - 1; y++) {
-    for (let x = 1; x < enhancedImage[0].length - 1; x++) {
-      resultPixels[`${x}-${y}`] = pixelValue(x, y, enhancedImage, algorithm);
+  for (let y = 0; y < expandedImage.length; y++) {
+    for (let x = 0; x < expandedImage[0].length; x++) {
+      resultPixels[`${x}-${y}`] = pixelValue(
+        x,
+        y,
+        expandedImage,
+        algorithm,
+        step
+      );
     }
   }
 
   for (let pixel in resultPixels) {
     const [x, y] = pixel.split("-");
-    enhancedImage[y][x] = resultPixels[pixel];
+    expandedImage[y][x] = resultPixels[pixel];
   }
 
-  return enhancedImage;
+  return expandedImage;
 };
 
 const countLit = (image) => {
-  let count = 0;
-  for (let y = 0; y < image.length; y++) {
-    for (let x = 0; x < image[0].length; x++) {
-      if (image[y][x] === "#") count++;
-    }
-  }
-  return count;
+  return image.flat().filter((pixel) => pixel === "#").length;
 };
 
 export function problem20_1(input) {
   let { algorithm, image } = processInput(input);
-  let enhancements = 2;
-  while (enhancements--) image = enhance(image, algorithm);
+  for (let i = 0; i < 2; i++) {
+    image = enhance(image, algorithm, i);
+  }
+
   return countLit(image);
 }
 
