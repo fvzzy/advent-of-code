@@ -2,8 +2,11 @@ export const day = 20;
 export const title = "trench map";
 
 const processInput = (input) => {
-  const algorithm = input.shift();
-  const image = input.filter(Boolean).map((line) => line.split(""));
+  const algorithm = input[0];
+  const image = input
+    .slice(1)
+    .filter(Boolean)
+    .map((line) => line.split(""));
   return { algorithm, image };
 };
 
@@ -23,26 +26,27 @@ const pixelValue = (x, y, image, algorithm, step) => {
   let binary = "";
   for (let [adjX, adjY] of adjacentPixels) {
     if (
-      y + adjY < 0 ||
-      y + adjY >= image.length ||
-      x + adjX < 0 ||
-      x + adjX >= image[0].length
+      algorithm[0] === "#" &&
+      (y + adjY < 0 ||
+        y + adjY >= image.length ||
+        x + adjX < 0 ||
+        x + adjX >= image[0].length)
     ) {
       binary += step % 2 === 0 ? 0 : 1;
     } else {
-      binary += image[y + adjY][x + adjX] === "#" ? 1 : 0;
+      binary += image[y + adjY]?.[x + adjX] === "#" ? 1 : 0;
     }
   }
 
   return algorithm[parseInt(binary, 2)];
 };
 
-const expand = (image, step) => {
+const expand = (image, background) => {
   const newWidth = image.length + 4;
   const newHeight = image[0].length + 4;
   let result = Array(newHeight)
     .fill()
-    .map(() => Array(newWidth).fill(step % 2 === 0 ? "." : "#"));
+    .map(() => Array(newWidth).fill(background));
 
   for (let y = 0; y < image.length; y++) {
     for (let x = 0; x < image[0].length; x++) {
@@ -53,7 +57,8 @@ const expand = (image, step) => {
 };
 
 const enhance = (image, algorithm, step) => {
-  let expandedImage = expand(image, step);
+  let background = algorithm[0] === "." ? "." : step % 2 === 0 ? "." : "#";
+  let expandedImage = expand(image, background);
   let resultPixels = {};
 
   for (let y = 0; y < expandedImage.length; y++) {
