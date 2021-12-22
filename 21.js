@@ -7,14 +7,14 @@ const startingPositions = (input) => {
   return { p1, p2 };
 };
 
-const next = (curr, dice) => (curr + 3 * dice + 3) % 10 || 10;
-
 export function problem21_1(input) {
   let { p1, p2 } = startingPositions(input);
   let p1Score = 0;
   let p2Score = 0;
   let p1Turn = true;
   let dice = 1;
+
+  const next = (curr, dice) => (curr + 3 * dice + 3) % 10 || 10;
 
   while (p1Score < 1000 && p2Score < 1000) {
     if (p1Turn) {
@@ -44,11 +44,13 @@ export function problem21_2(input) {
 
   let cache = new Map();
 
-  const takeTurn = (p1, p2, p1Score, p2Score, combos, p1Turn) => {
-    if (p1Score >= 21) return [combos, 0];
-    if (p2Score >= 21) return [0, combos];
+  const next = (curr, dice) => (curr + Number(dice)) % 10 || 10;
 
-    const key = [p1, p2, p1Score, p2Score, p1Turn].join("-");
+  const takeTurn = (p1, p2, p1Score, p2Score, p1Turn) => {
+    if (p1Score >= 21) return [1, 0];
+    if (p2Score >= 21) return [0, 1];
+
+    const key = [p1Turn, p1, p2, p1Score, p2Score].join("-");
     const cached = cache.get(key);
     if (cached) return cached;
 
@@ -60,11 +62,10 @@ export function problem21_2(input) {
         p1Turn ? p2 : next(p2, dice),
         p1Turn ? p1Score + next(p1, dice) : p1Score,
         p1Turn ? p2Score : p2Score + next(p2, dice),
-        combos,
         !p1Turn
       );
-      wins[0] += p1Wins;
-      wins[1] += p2Wins;
+      wins[0] += combos * p1Wins;
+      wins[1] += combos * p2Wins;
     }
 
     cache.set(key, wins);
@@ -72,7 +73,7 @@ export function problem21_2(input) {
   };
 
   const { p1, p2 } = startingPositions(input);
-  let wins = takeTurn(p1, p2, 0, 0, 0, true);
+  let wins = takeTurn(p1, p2, 0, 0, true);
 
   return Math.max(...wins);
 }
