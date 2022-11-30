@@ -45,7 +45,7 @@ const expand = (image, background) => {
   const newWidth = image.length + 4;
   const newHeight = image[0].length + 4;
   let result = Array(newHeight)
-    .fill()
+    .fill(undefined)
     .map(() => Array(newWidth).fill(background));
 
   for (let y = 0; y < image.length; y++) {

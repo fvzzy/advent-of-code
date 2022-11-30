@@ -5,7 +5,7 @@ const fuelForAligment = (input, fuelCalc) => {
   const crabs = input[0].split(",").map(Number);
   const [min, max] = [Math.min(...crabs), Math.max(...crabs)];
   const positions = Array(max - min + 1)
-    .fill()
+    .fill(undefined)
     .map((_, idx) => min + idx);
 
   return Math.min(

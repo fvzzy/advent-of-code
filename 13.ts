@@ -18,7 +18,7 @@ const markDots = (dots) => {
   const maxX = Math.max(...dots.map((xy) => xy[0])) + 1;
   const maxY = Math.max(...dots.map((xy) => xy[1])) + 1;
   let paper = Array(maxY)
-    .fill()
+    .fill(undefined)
     .map(() => Array(maxX).fill("."));
 
   for (let dotXY of dots) {
