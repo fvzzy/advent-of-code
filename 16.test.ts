@@ -5,7 +5,7 @@ import {
   interpretPacket,
   day,
   title,
-} from "./16.js";
+} from "./16";
 
 describe(`day ${day}: ${title}`, () => {
   describe("#hexToPacket", () => {

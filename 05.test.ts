@@ -1,4 +1,4 @@
-import { problem5_1, problem5_2, day, title } from "./05.js";
+import { problem5_1, problem5_2, day, title } from "./05";
 
 describe(`day ${day}: ${title}`, () => {
   describe("example inputs", () => {
