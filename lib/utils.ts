@@ -3,9 +3,9 @@ import fetch from "node-fetch";
 
 const dayPadded = (day) => day.toString().padStart(2, "0");
 
-export async function getInput(day) {
+export async function getInput(year, day) {
   const inputDir = "./inputs";
-  const inputFile = `${inputDir}/${dayPadded(day)}.txt`;
+  const inputFile = `${inputDir}/${year}-${dayPadded(day)}.txt`;
 
   if (existsSync(inputFile)) {
     return readFileSync(inputFile).toString("utf-8");
@@ -19,7 +19,7 @@ export async function getInput(day) {
   }
 
   const opts = { headers: { cookie: `session=${process.env.SESSION_TOKEN}` } };
-  const url = `https://adventofcode.com/2021/day/${day}/input`;
+  const url = `https://adventofcode.com/${year}/day/${day}/input`;
   const res = await fetch(url, opts);
   const input = await res.text();
 
