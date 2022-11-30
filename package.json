@@ -6,6 +6,7 @@
   "author": "Farhan Rahman",
   "type": "module",
   "scripts": {
+    "build": "tsc",
     "test": "NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node' jest",
     "add-files": "node ./scripts/addFiles.js",
     "answers": "node -r dotenv/config ./scripts/answers.js"

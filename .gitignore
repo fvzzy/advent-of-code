@@ -1,3 +1,4 @@
+dist/
 inputs/
 node_modules/
 .env
