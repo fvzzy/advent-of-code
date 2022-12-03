@@ -1,6 +1,6 @@
-import { problem2021_15_1, problem2021_15_2, title } from "./15";
+import { problem2021_15_1, problem2021_15_2 } from "./15";
 
-describe(`2021 day 15: ${title}`, () => {
+describe(`2021 day 15: "chiton"`, () => {
   describe("example inputs", () => {
     const exampleInput = [
       "1163751742",

@@ -1,5 +1,4 @@
-/* 2021 day 20 */
-export const title = "trench map";
+/* 2021 day 20: "trench map" */
 
 const processInput = (input) => {
   const algorithm = input[0];

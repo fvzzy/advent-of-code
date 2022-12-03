@@ -1,5 +1,4 @@
-/* 2021 day 17 */
-export const title = "trick shot";
+/* 2021 day 17: "trick shot" */
 
 const parseTargetArea = (input) => input[0].match(/\-?\d+/g);
 

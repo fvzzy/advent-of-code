@@ -1,5 +1,4 @@
-/* 2021 day 2 */
-export const title = "dive!";
+/* 2021 day 2: "dive!" */
 
 export function problem2021_2_1(input: string[]) {
   let x = 0;

@@ -1,5 +1,4 @@
-/* 2021 day 13 */
-export const title = "transparent origami";
+/* 2021 day 13: "transparent origami" */
 
 const readInstructions = (input) => {
   let line = -1;

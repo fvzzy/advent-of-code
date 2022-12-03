@@ -1,5 +1,4 @@
-/* 2021 day 14 */
-export const title = "extended polymerization";
+/* 2021 day 14: "extended polymerization" */
 
 const processInstructions = (input) => {
   const polymer = input[0];

@@ -1,5 +1,4 @@
-/* 2021 day 16 */
-export const title = "packet decoder";
+/* 2021 day 16: "packet decoder" */
 
 export const hexToPacket = (hexString) => {
   const map = {

@@ -1,5 +1,4 @@
-/* 2021 day 1 */
-export const title = "sonar sweep";
+/* 2021 day 1: "sonar sweep" */
 
 export function problem2021_1_1(input: string[]) {
   const depths = input.map(Number);

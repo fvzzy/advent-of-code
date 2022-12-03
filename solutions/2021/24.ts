@@ -1,5 +1,4 @@
-/* 2021 day 24 */
-export const title = "arithmetic logic unit";
+/* 2021 day 24: "arithmetic logic unit" */
 
 const operations = {
   inp: (a, b, res) => (res[a] = b),

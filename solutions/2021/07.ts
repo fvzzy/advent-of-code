@@ -1,5 +1,4 @@
-/* 2021 day 7 */
-export const title = "the treachery of whales";
+/* 2021 day 7: "the treachery of whales" */
 
 const fuelForAligment = (input, fuelCalc) => {
   const crabs = input[0].split(",").map(Number);

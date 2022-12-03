@@ -1,5 +1,4 @@
-/* 2021 day 8 */
-export const title = "seven segment search";
+/* 2021 day 8: "seven segment search" */
 
 export function problem2021_8_1(input: string[]) {
   // get count with single pass over each input char

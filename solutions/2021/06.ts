@@ -1,5 +1,4 @@
-/* 2021 day 6 */
-export const title = "lanternfish";
+/* 2021 day 6: "lanternfish" */
 
 // iterative solution using strings for storage, for posterity
 // far too inefficient to run on the larger problem set

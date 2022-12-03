@@ -1,5 +1,4 @@
-/* 2021 day 10 */
-export const title = "syntax scoring";
+/* 2021 day 10: "syntax scoring" */
 
 const illegalCharScore = {
   ")": 3,

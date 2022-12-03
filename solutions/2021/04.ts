@@ -1,5 +1,4 @@
-/* 2021 day 4 */
-export const title = "giant squid";
+/* 2021 day 4: "giant squid" */
 
 const processInput = (input) => {
   const numbers = input[0].split(",");

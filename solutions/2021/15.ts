@@ -1,5 +1,4 @@
-/* 2021 day 15 */
-export const title = "chiton";
+/* 2021 day 15: "chiton" */
 
 const adjacencyList = (caveMap) => {
   const directions = [

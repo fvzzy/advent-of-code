@@ -1,5 +1,4 @@
-/* 2021 day 5 */
-export const title = "hydrothermal venture";
+/* 2021 day 5: "hydrothermal venture" */
 
 const inputToCoords = (inputLine) => {
   const [_, startX, startY, endX, endY] = inputLine.match(/^(\d+),(\d+) -> (\d+),(\d+)$/).map(Number);

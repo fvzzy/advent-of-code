@@ -1,5 +1,4 @@
-/* 2021 day 11 */
-export const title = "dumbo octopus";
+/* 2021 day 11: "dumbo octopus" */
 
 const octopiMap = (input) => input.map((line) => line.split("").map(Number));
 

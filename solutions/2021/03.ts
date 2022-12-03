@@ -1,5 +1,4 @@
-/* 2021 day 3 */
-export const title = "binary diagnostic";
+/* 2021 day 3: "binary diagnostic" */
 
 const binaryToInt = (binaryString) => parseInt(binaryString, 2);
 

@@ -1,5 +1,4 @@
-/* 2021 day 21 */
-export const title = "dirac dice";
+/* 2021 day 21: "dirac dice" */
 
 const startingPositions = (input) => {
   const p1 = Number(input[0].split(": ")[1]);

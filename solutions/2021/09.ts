@@ -1,5 +1,4 @@
-/* 2021 day 9 */
-export const title = "smoke basin";
+/* 2021 day 9: "smoke basin" */
 
 const findLowPoints = (heightMap) => {
   let lowPoints = [];

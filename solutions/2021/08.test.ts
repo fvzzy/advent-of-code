@@ -1,6 +1,6 @@
-import { problem2021_8_1, problem2021_8_2, title } from "./08";
+import { problem2021_8_1, problem2021_8_2 } from "./08";
 
-describe(`2021 day 8: ${title}`, () => {
+describe(`2021 day 8: "seven segment search"`, () => {
   describe("example inputs", () => {
     const exampleInput = [
       "be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe",

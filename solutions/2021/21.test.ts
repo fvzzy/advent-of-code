@@ -1,6 +1,6 @@
-import { problem2021_21_1, problem2021_21_2, title } from "./21";
+import { problem2021_21_1, problem2021_21_2 } from "./21";
 
-describe(`2021 day 21: ${title}`, () => {
+describe(`2021 day 21: "dirac dice"`, () => {
   describe("example inputs", () => {
     const exampleInput = ["Player 1 starting position: 4", "Player 2 starting position: 8"];
 
