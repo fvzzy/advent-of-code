@@ -1,6 +1,6 @@
-import { problem2021_11_1, problem2021_11_2, step, day, title } from "./11";
+import { problem2021_11_1, problem2021_11_2, step, title } from "./11";
 
-describe(`day ${day}: ${title}`, () => {
+describe(`2021 day 11: ${title}`, () => {
   describe("#step", () => {
     let subExampleInput;
     beforeEach(() => {

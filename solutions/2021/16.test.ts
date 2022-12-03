@@ -1,6 +1,6 @@
-import { problem2021_16_1, problem2021_16_2, hexToPacket, interpretPacket, day, title } from "./16";
+import { problem2021_16_1, problem2021_16_2, hexToPacket, interpretPacket, title } from "./16";
 
-describe(`day ${day}: ${title}`, () => {
+describe(`2021 day 16: ${title}`, () => {
   describe("#hexToPacket", () => {
     test("returns the correct binary string", () => {
       expect(hexToPacket("D2FE28")).toBe("110100101111111000101000");
