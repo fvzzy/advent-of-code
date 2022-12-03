@@ -20,6 +20,7 @@ import { problem2021_21_1, problem2021_21_2 } from "../dist/2021/21.js";
 import { problem2021_22_1, problem2021_22_2 } from "../dist/2021/22.js";
 import { problem2021_23_1, problem2021_23_2 } from "../dist/2021/23.js";
 import { problem2021_24_1, problem2021_24_2 } from "../dist/2021/24.js";
+import { problem2022_1_1, problem2022_1_2 } from "../dist/2022/01.js";
 
 export default {
   "2021_1": { problem1: problem2021_1_1, problem2: problem2021_1_2 },
@@ -44,4 +45,5 @@ export default {
   "2021_22": { problem1: problem2021_22_1, problem2: problem2021_22_2 },
   "2021_23": { problem1: problem2021_23_1, problem2: problem2021_23_2 },
   "2021_24": { problem1: problem2021_24_1, problem2: problem2021_24_2 },
+  "2022_1": { problem1: problem2022_1_1, problem2: problem2022_1_2 },
 };
