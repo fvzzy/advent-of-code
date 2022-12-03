@@ -1,6 +1,6 @@
 import { problem2021_23_1, problem2021_23_2 } from "./23";
 
-describe(`2021 day 23: "amphipod"`, () => {
+describe.skip(`2021 day 23: "amphipod"`, () => {
   describe("example inputs", () => {
     const exampleInput = ["#############", "#...........#", "###B#C#B#D###", "  #A#D#C#A#  ", "  #########  ", ""];
 

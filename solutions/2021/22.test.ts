@@ -31,8 +31,8 @@ describe(`2021 day 22: "reactor reboot"`, () => {
       expect(problem2021_22_1(exampleInput)).toBe(590784);
     });
 
-    // test("part 2 solution works", () => {
-    //   expect(problem2021_22_2(exampleInput)).toBe(undefined);
-    // });
+    test.skip("part 2 solution works", () => {
+      expect(problem2021_22_2(exampleInput)).toBe(undefined);
+    });
   });
 });
