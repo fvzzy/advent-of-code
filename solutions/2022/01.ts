@@ -17,18 +17,28 @@ export function problem2022_1_1(input: string[]) {
 }
 
 export function problem2022_1_2(input: string[]) {
-  const totals = [];
+  let max1 = 0;
+  let max2 = 0;
+  let max3 = 0;
   let currentTotal = 0;
 
   for (let val of input) {
     if (val !== "") {
       currentTotal += parseInt(val);
     } else {
-      totals.push(currentTotal);
+      if (currentTotal > max1) {
+        max3 = max2;
+        max2 = max1;
+        max1 = currentTotal;
+      } else if (currentTotal > max2) {
+        max3 = max2;
+        max2 = currentTotal;
+      } else if (currentTotal > max3) {
+        max3 = currentTotal;
+      }
       currentTotal = 0;
     }
   }
 
-  totals.sort((a, b) => b - a);
-  return totals[0] + totals[1] + totals[2];
+  return max1 + max2 + max3;
 }
