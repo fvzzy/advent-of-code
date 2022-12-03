@@ -1,4 +1,4 @@
-import { getInput } from "../lib/utils.js";
+import getInput from "../lib/getInput.js";
 import solutions from "../solutions/solutions.js";
 
 const [year, day] = process.argv.slice(2);
@@ -7,7 +7,7 @@ const rawInput = await getInput(year, day);
 const input = rawInput.split("\n");
 input.pop();
 
-const { problem1, problem2, title } = solutions[year][day];
+const { problem1, problem2, title } = solutions[`${year}_${day}`];
 console.log(`--- ${year} day ${day}: ${title} ---`);
 
 const timePart1 = "⚡1";

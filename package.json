@@ -8,8 +8,9 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "add-files": "node ./dist/scripts/addFiles.js",
-    "answers": "node -r dotenv/config ./dist/scripts/answers.js"
+    "add-files": "node ./scripts/addFiles.js",
+    "answers": "node -r dotenv/config ./scripts/answers.js",
+    "update-index": "node ./scripts/updateIndex.js"
   },
   "dependencies": {
     "dotenv": "^16.0.3",
