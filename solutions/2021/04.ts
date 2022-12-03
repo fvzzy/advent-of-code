@@ -94,8 +94,7 @@ const winningBingoScore = (input, lastBoardWins = false) => {
 
           // calculate the remaining total of all numbers in this board
           // check if we're on a row set so we only subtract the value once
-          if (seriesType === "rows")
-            boardUnmarkedSum[boardNumber] -= calledNumber;
+          if (seriesType === "rows") boardUnmarkedSum[boardNumber] -= calledNumber;
 
           // bingo!
           if (set.size === 0) {
@@ -117,10 +116,10 @@ const winningBingoScore = (input, lastBoardWins = false) => {
   }
 };
 
-export function problem4_1(input) {
+export function problem2021_4_1(input) {
   return winningBingoScore(input);
 }
 
-export function problem4_2(input) {
+export function problem2021_4_2(input) {
   return winningBingoScore(input, true);
 }

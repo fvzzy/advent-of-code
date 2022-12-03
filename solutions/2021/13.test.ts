@@ -1,4 +1,4 @@
-import { problem13_1, problem13_2, day, title } from "./13";
+import { problem2021_13_1, problem2021_13_2, day, title } from "./13";
 
 describe(`day ${day}: ${title}`, () => {
   describe("example inputs", () => {
@@ -27,11 +27,11 @@ describe(`day ${day}: ${title}`, () => {
     ];
 
     test("part 1 solution works", () => {
-      expect(problem13_1(exampleInput)).toBe(17);
+      expect(problem2021_13_1(exampleInput)).toBe(17);
     });
 
     test("part 2 solution works", () => {
-      expect(problem13_2(exampleInput)).toStrictEqual([
+      expect(problem2021_13_2(exampleInput)).toStrictEqual([
         ["#", "#", "#", "#", "#"],
         ["#", ".", ".", ".", "#"],
         ["#", ".", ".", ".", "#"],

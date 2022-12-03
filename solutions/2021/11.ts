@@ -36,13 +36,7 @@ export const step = (octopi) => {
 
     // increment every octopus adjacent to a charged one
     for (let [adjX, adjY] of adjacentCoords) {
-      if (
-        y + adjY < 0 ||
-        y + adjY >= octopi.length ||
-        x + adjX < 0 ||
-        x + adjX >= octopi[0].length
-      )
-        continue;
+      if (y + adjY < 0 || y + adjY >= octopi.length || x + adjX < 0 || x + adjX >= octopi[0].length) continue;
 
       const adjKey = `${x + adjX}${y + adjY}`;
       // ignore adjacent octopi that are also charged, or already flashed
@@ -65,7 +59,7 @@ export const step = (octopi) => {
   return { octopi, flashes: flashed.size };
 };
 
-export function problem11_1(input) {
+export function problem2021_11_1(input) {
   const octopi = octopiMap(input);
   let steps = 100;
   let flashes = 0;
@@ -73,7 +67,7 @@ export function problem11_1(input) {
   return flashes;
 }
 
-export function problem11_2(input) {
+export function problem2021_11_2(input) {
   const octopi = octopiMap(input);
   let steps = 1;
   while (step(octopi).flashes !== 100) steps++;

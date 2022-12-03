@@ -39,10 +39,10 @@ const population = (input, days) => {
   return populationsByTimer.reduce((fish, sum) => fish + sum, 0);
 };
 
-export function problem6_1(input) {
+export function problem2021_6_1(input) {
   return population(input, 80);
 }
 
-export function problem6_2(input) {
+export function problem2021_6_2(input) {
   return population(input, 256);
 }

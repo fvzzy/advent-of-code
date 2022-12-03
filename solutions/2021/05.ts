@@ -2,9 +2,7 @@ export const day = 5;
 export const title = "hydrothermal venture";
 
 const inputToCoords = (inputLine) => {
-  const [_, startX, startY, endX, endY] = inputLine
-    .match(/^(\d+),(\d+) -> (\d+),(\d+)$/)
-    .map(Number);
+  const [_, startX, startY, endX, endY] = inputLine.match(/^(\d+),(\d+) -> (\d+),(\d+)$/).map(Number);
 
   return { startX, startY, endX, endY };
 };
@@ -34,17 +32,15 @@ const countIntersectingLines = (input, skipDiagonals = true) => {
     }
   }
 
-  const coordsWithOverlaps = Object.values(coordsIntersectCounts).filter(
-    (val) => val >= 2
-  ).length;
+  const coordsWithOverlaps = Object.values(coordsIntersectCounts).filter((val) => val >= 2).length;
 
   return coordsWithOverlaps;
 };
 
-export function problem5_1(input) {
+export function problem2021_5_1(input) {
   return countIntersectingLines(input);
 }
 
-export function problem5_2(input) {
+export function problem2021_5_2(input) {
   return countIntersectingLines(input, false);
 }

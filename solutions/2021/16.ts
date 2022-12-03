@@ -117,17 +117,16 @@ const evaluatePacket = (packet) => {
   }
 };
 
-export function problem16_1(input) {
+export function problem2021_16_1(input) {
   const sum = (arr) => arr.reduce((sum, curr) => curr + sum, 0);
   const sumProperty = (prop) => (packet) =>
-    packet[prop] +
-    (packet.subpackets ? sum(packet.subpackets.map(sumProperty(prop))) : 0);
+    packet[prop] + (packet.subpackets ? sum(packet.subpackets.map(sumProperty(prop))) : 0);
 
   const transmission = decodeTransmission(input[0]);
   return sumProperty("version")(transmission);
 }
 
-export function problem16_2(input) {
+export function problem2021_16_2(input) {
   const transmission = decodeTransmission(input[0]);
   return evaluatePacket(transmission);
 }

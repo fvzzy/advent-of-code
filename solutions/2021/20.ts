@@ -27,10 +27,7 @@ const pixelValue = (x, y, image, algorithm, step) => {
   for (let [adjX, adjY] of adjacentPixels) {
     if (
       algorithm[0] === "#" &&
-      (y + adjY < 0 ||
-        y + adjY >= image.length ||
-        x + adjX < 0 ||
-        x + adjX >= image[0].length)
+      (y + adjY < 0 || y + adjY >= image.length || x + adjX < 0 || x + adjX >= image[0].length)
     ) {
       binary += step % 2 === 0 ? 0 : 1;
     } else {
@@ -63,13 +60,7 @@ const enhance = (image, algorithm, step) => {
 
   for (let y = 0; y < expandedImage.length; y++) {
     for (let x = 0; x < expandedImage[0].length; x++) {
-      resultPixels[`${x}-${y}`] = pixelValue(
-        x,
-        y,
-        expandedImage,
-        algorithm,
-        step
-      );
+      resultPixels[`${x}-${y}`] = pixelValue(x, y, expandedImage, algorithm, step);
     }
   }
 
@@ -85,7 +76,7 @@ const countLit = (image) => {
   return image.flat().filter((pixel) => pixel === "#").length;
 };
 
-export function problem20_1(input) {
+export function problem2021_20_1(input) {
   let { algorithm, image } = processInput(input);
   for (let i = 0; i < 2; i++) {
     image = enhance(image, algorithm, i);
@@ -94,7 +85,7 @@ export function problem20_1(input) {
   return countLit(image);
 }
 
-export function problem20_2(input) {
+export function problem2021_20_2(input) {
   let { algorithm, image } = processInput(input);
   for (let i = 0; i < 50; i++) {
     image = enhance(image, algorithm, i);

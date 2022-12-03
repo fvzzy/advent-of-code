@@ -1,4 +1,4 @@
-import { problem14_1, problem14_2, day, title } from "./14";
+import { problem2021_14_1, problem2021_14_2, day, title } from "./14";
 
 describe(`day ${day}: ${title}`, () => {
   describe("example inputs", () => {
@@ -24,11 +24,11 @@ describe(`day ${day}: ${title}`, () => {
     ];
 
     test("part 1 solution works", () => {
-      expect(problem14_1(exampleInput)).toBe(1588);
+      expect(problem2021_14_1(exampleInput)).toBe(1588);
     });
 
     test("part 2 solution works", () => {
-      expect(problem14_2(exampleInput)).toBe(2188189693529);
+      expect(problem2021_14_2(exampleInput)).toBe(2188189693529);
     });
   });
 });

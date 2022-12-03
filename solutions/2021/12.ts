@@ -16,24 +16,14 @@ const createAdjacencyList = (input) => {
   return result;
 };
 
-const isSmallCave = (cave) =>
-  cave !== "start" && cave !== "end" && cave === cave.toLowerCase();
+const isSmallCave = (cave) => cave !== "start" && cave !== "end" && cave === cave.toLowerCase();
 
 const mapPaths = (options) => {
-  const {
-    adjacencyList,
-    isInvalidVisitFn,
-    cave = "start",
-    path = "start",
-    paths = [],
-    smallCaveVisits = {},
-  } = options;
+  const { adjacencyList, isInvalidVisitFn, cave = "start", path = "start", paths = [], smallCaveVisits = {} } = options;
 
   // store counts of visits to small caves
   if (isSmallCave(cave)) {
-    smallCaveVisits[cave]
-      ? smallCaveVisits[cave]++
-      : (smallCaveVisits[cave] = 1);
+    smallCaveVisits[cave] ? smallCaveVisits[cave]++ : (smallCaveVisits[cave] = 1);
   }
 
   // exit the traversal if we're breaking the small cave visit rules
@@ -57,21 +47,18 @@ const mapPaths = (options) => {
   return paths;
 };
 
-export function problem12_1(input) {
+export function problem2021_12_1(input) {
   const adjacencyList = createAdjacencyList(input);
-  const isInvalidVisitFn = (smallCaveVisits) =>
-    Object.values(smallCaveVisits).some((visitCount) => visitCount > 1);
+  const isInvalidVisitFn = (smallCaveVisits) => Object.values(smallCaveVisits).some((visitCount) => visitCount > 1);
 
   const paths = mapPaths({ adjacencyList, isInvalidVisitFn });
   return paths.length;
 }
 
-export function problem12_2(input) {
+export function problem2021_12_2(input) {
   const adjacencyList = createAdjacencyList(input);
   const isInvalidVisitFn = (smallCaveVisits) => {
-    const backtrackedCaves = Object.values(smallCaveVisits).filter(
-      (visitCount) => visitCount > 1
-    );
+    const backtrackedCaves = Object.values(smallCaveVisits).filter((visitCount) => visitCount > 1);
     const visitedAnyMoreThanOnce = backtrackedCaves.length > 1;
     const visitedOneMoreThanTwice = backtrackedCaves.some((vc) => vc > 2);
     return visitedAnyMoreThanOnce || visitedOneMoreThanTwice;

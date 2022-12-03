@@ -73,14 +73,14 @@ const countDots = (paper) => {
   return dotCount;
 };
 
-export function problem13_1(input) {
+export function problem2021_13_1(input) {
   const { dots, folds } = readInstructions(input);
   let paper = markDots(dots);
   paper = fold(paper, [folds[0]]);
   return countDots(paper);
 }
 
-export function problem13_2(input) {
+export function problem2021_13_2(input) {
   const { dots, folds } = readInstructions(input);
   let paper = markDots(dots);
   return fold(paper, folds);

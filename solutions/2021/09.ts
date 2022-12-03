@@ -12,12 +12,7 @@ const findLowPoints = (heightMap) => {
         heightMap[y]?.[x - 1] ?? Infinity,
         heightMap[y]?.[x + 1] ?? Infinity,
       ];
-      if (
-        currentHeight < up &&
-        currentHeight < down &&
-        currentHeight < left &&
-        currentHeight < right
-      ) {
+      if (currentHeight < up && currentHeight < down && currentHeight < left && currentHeight < right) {
         lowPoints.push({ x, y });
       }
     }
@@ -25,17 +20,14 @@ const findLowPoints = (heightMap) => {
   return lowPoints;
 };
 
-export function problem9_1(input) {
+export function problem2021_9_1(input) {
   const heightMap = input.map((line) => line.split("").map(Number));
   const lowPoints = findLowPoints(heightMap);
 
-  return lowPoints.reduce(
-    (riskSum, point) => riskSum + heightMap[point.y][point.x] + 1,
-    0
-  );
+  return lowPoints.reduce((riskSum, point) => riskSum + heightMap[point.y][point.x] + 1, 0);
 }
 
-export function problem9_2(input) {
+export function problem2021_9_2(input) {
   const heightMap = input.map((line) => line.split("").map(Number));
   const lowPoints = findLowPoints(heightMap);
   let basins = [];

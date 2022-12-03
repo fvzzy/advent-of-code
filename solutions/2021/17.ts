@@ -57,12 +57,12 @@ const spamProbes = (targetArea) => {
   return { maxHeight: maxHeightOverall, validShots };
 };
 
-export function problem17_1(input) {
+export function problem2021_17_1(input) {
   const targetArea = parseTargetArea(input);
   return spamProbes(targetArea).maxHeight;
 }
 
-export function problem17_2(input) {
+export function problem2021_17_2(input) {
   const targetArea = parseTargetArea(input);
   return spamProbes(targetArea).validShots;
 }

@@ -25,7 +25,7 @@ const maxElementCountDiff = (counts) => {
   return maxFrequency - minFrequency;
 };
 
-export function problem14_1(input) {
+export function problem2021_14_1(input) {
   const { polymer: _polymer, rules } = processInstructions(input);
   let polymer = _polymer;
 
@@ -47,16 +47,14 @@ export function problem14_1(input) {
   return maxElementCountDiff(counts);
 }
 
-export function problem14_2(input) {
+export function problem2021_14_2(input) {
   const { polymer, rules } = processInstructions(input);
 
   // save frequency counts of each pair of characters
   let pairFrequencies = {};
   for (let i = 0; i < polymer.length - 1; i++) {
     const pair = polymer[i] + polymer[i + 1];
-    pairFrequencies[pair]
-      ? pairFrequencies[pair]++
-      : (pairFrequencies[pair] = 1);
+    pairFrequencies[pair] ? pairFrequencies[pair]++ : (pairFrequencies[pair] = 1);
   }
 
   for (let step = 0; step < 40; step++) {

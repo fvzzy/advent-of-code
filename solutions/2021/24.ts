@@ -30,7 +30,7 @@ const isValidModelNo = (modelNo, instructions) => {
   return res.z === 0;
 };
 
-export function problem24_1(input) {
+export function problem2021_24_1(input) {
   let minN = 11111111111111;
   for (let n = 99999999999999; n >= minN; n--) {
     if (String(n).includes("0")) continue;
@@ -40,4 +40,4 @@ export function problem24_1(input) {
   return minN;
 }
 
-export function problem24_2(input) {}
+export function problem2021_24_2(input) {}

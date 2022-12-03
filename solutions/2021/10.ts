@@ -32,10 +32,7 @@ const openingParens = {
 const corruptOrIncompleteLineParts = (line) => {
   let stack = [];
   for (let i = 0; i < line.length; i++) {
-    if (
-      closingParens[line[i]] &&
-      stack[stack.length - 1] === closingParens[line[i]]
-    ) {
+    if (closingParens[line[i]] && stack[stack.length - 1] === closingParens[line[i]]) {
       stack.pop();
     } else {
       stack.push(line[i]);
@@ -66,7 +63,7 @@ const autocompleteScore = (parens) => {
   return score;
 };
 
-export function problem10_1(input) {
+export function problem2021_10_1(input) {
   return input
     .map(corruptOrIncompleteLineParts)
     .filter(isCorrupted)
@@ -74,7 +71,7 @@ export function problem10_1(input) {
     .reduce((errorScore, paren) => errorScore + illegalCharScore[paren], 0);
 }
 
-export function problem10_2(input) {
+export function problem2021_10_2(input) {
   const scores = input
     .map(corruptOrIncompleteLineParts)
     .filter((line) => !isCorrupted(line))

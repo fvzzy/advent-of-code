@@ -18,8 +18,7 @@ const adjacencyList = (caveMap) => {
       for (let [shiftX, shiftY] of directions) {
         const [adjX, adjY] = [shiftX + x, shiftY + y];
         const adjKey = `${adjX}_${adjY}`;
-        if (caveMap[adjY]?.[adjX])
-          adjacencyList[node][adjKey] = caveMap[adjY][adjX];
+        if (caveMap[adjY]?.[adjX]) adjacencyList[node][adjKey] = caveMap[adjY][adjX];
       }
     }
   }
@@ -86,8 +85,7 @@ const generateFullMap = (input, scale) => {
       let xy = map[y][x];
       for (let expansion = 1; expansion < scale; expansion++) {
         xy = xy === 9 ? 1 : xy + 1;
-        if (!map[expansion * partialHeight + y])
-          map[expansion * partialHeight + y] = [];
+        if (!map[expansion * partialHeight + y]) map[expansion * partialHeight + y] = [];
         map[expansion * partialHeight + y][x] = xy;
       }
     }
@@ -96,14 +94,14 @@ const generateFullMap = (input, scale) => {
   return map;
 };
 
-export function problem15_1(input) {
+export function problem2021_15_1(input) {
   const caveMap = input.map((line) => line.split("").map(Number));
   const graph = adjacencyList(caveMap);
   const endNode = `${input[0].length - 1}_${input.length - 1}`;
   return shortestPath(graph, "0_0", endNode);
 }
 
-export function problem15_2(input) {
+export function problem2021_15_2(input) {
   const scale = 5;
   const fullMap = generateFullMap(input, scale);
   const graph = adjacencyList(fullMap);
