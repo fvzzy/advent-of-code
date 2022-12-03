@@ -1,4 +1,4 @@
-export const day = 17;
+/* 2021 day 17 */
 export const title = "trick shot";
 
 const parseTargetArea = (input) => input[0].match(/\-?\d+/g);
@@ -57,12 +57,12 @@ const spamProbes = (targetArea) => {
   return { maxHeight: maxHeightOverall, validShots };
 };
 
-export function problem2021_17_1(input) {
+export function problem2021_17_1(input: string[]) {
   const targetArea = parseTargetArea(input);
   return spamProbes(targetArea).maxHeight;
 }
 
-export function problem2021_17_2(input) {
+export function problem2021_17_2(input: string[]) {
   const targetArea = parseTargetArea(input);
   return spamProbes(targetArea).validShots;
 }

@@ -1,4 +1,4 @@
-export const day = 7;
+/* 2021 day 7 */
 export const title = "the treachery of whales";
 
 const fuelForAligment = (input, fuelCalc) => {
@@ -15,11 +15,11 @@ const fuelForAligment = (input, fuelCalc) => {
   );
 };
 
-export function problem2021_7_1(input) {
+export function problem2021_7_1(input: string[]) {
   return fuelForAligment(input, (x) => x);
 }
 
-export function problem2021_7_2(input) {
+export function problem2021_7_2(input: string[]) {
   const fuelCalc = (distance) => (distance * (distance + 1)) / 2;
   return fuelForAligment(input, fuelCalc);
 }

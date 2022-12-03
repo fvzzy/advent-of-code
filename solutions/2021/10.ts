@@ -1,4 +1,4 @@
-export const day = 10;
+/* 2021 day 10 */
 export const title = "syntax scoring";
 
 const illegalCharScore = {
@@ -63,7 +63,7 @@ const autocompleteScore = (parens) => {
   return score;
 };
 
-export function problem2021_10_1(input) {
+export function problem2021_10_1(input: string[]) {
   return input
     .map(corruptOrIncompleteLineParts)
     .filter(isCorrupted)
@@ -71,7 +71,7 @@ export function problem2021_10_1(input) {
     .reduce((errorScore, paren) => errorScore + illegalCharScore[paren], 0);
 }
 
-export function problem2021_10_2(input) {
+export function problem2021_10_2(input: string[]) {
   const scores = input
     .map(corruptOrIncompleteLineParts)
     .filter((line) => !isCorrupted(line))

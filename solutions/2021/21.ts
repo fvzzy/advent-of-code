@@ -1,4 +1,4 @@
-export const day = 21;
+/* 2021 day 21 */
 export const title = "dirac dice";
 
 const startingPositions = (input) => {
@@ -7,7 +7,7 @@ const startingPositions = (input) => {
   return { p1, p2 };
 };
 
-export function problem2021_21_1(input) {
+export function problem2021_21_1(input: string[]) {
   let { p1, p2 } = startingPositions(input);
   let p1Score = 0;
   let p2Score = 0;
@@ -31,7 +31,7 @@ export function problem2021_21_1(input) {
   return (dice - 1) * Math.min(p1Score, p2Score);
 }
 
-export function problem2021_21_2(input) {
+export function problem2021_21_2(input: string[]) {
   const rolls = {
     3: 1, // [1,1,1]
     4: 3, // [1,1,2], [1,2,1], [2,1,1]

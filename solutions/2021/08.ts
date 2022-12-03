@@ -1,7 +1,7 @@
-export const day = 8;
+/* 2021 day 8 */
 export const title = "seven segment search";
 
-export function problem2021_8_1(input) {
+export function problem2021_8_1(input: string[]) {
   // get count with single pass over each input char
   let count = 0;
   for (let line = 0; line < input.length; line++) {
@@ -52,7 +52,7 @@ const decodeOutputValue = (outputValueStr, digitPatterns) => {
   return Number(outputValues.map((v) => valueToDigit(v)).join(""));
 };
 
-export function problem2021_8_2(input) {
+export function problem2021_8_2(input: string[]) {
   let sumOutputValues = 0;
   for (let line of input) {
     const [signalPatternsStr, outputValueStr] = line.split(" | ");

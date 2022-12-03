@@ -1,4 +1,4 @@
-export const day = 5;
+/* 2021 day 5 */
 export const title = "hydrothermal venture";
 
 const inputToCoords = (inputLine) => {
@@ -37,10 +37,10 @@ const countIntersectingLines = (input, skipDiagonals = true) => {
   return coordsWithOverlaps;
 };
 
-export function problem2021_5_1(input) {
+export function problem2021_5_1(input: string[]) {
   return countIntersectingLines(input);
 }
 
-export function problem2021_5_2(input) {
+export function problem2021_5_2(input: string[]) {
   return countIntersectingLines(input, false);
 }

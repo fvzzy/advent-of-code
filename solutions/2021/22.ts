@@ -1,4 +1,4 @@
-export const day = 22;
+/* 2021 day 22 */
 export const title = "reactor reboot";
 
 const stepToRange = (step) => {
@@ -21,7 +21,7 @@ const rangeToCubes = (range) => {
 const union = (a, b) => [...new Set([...a, ...b])];
 const subtract = (a, b) => a.filter((el) => !b.includes(el));
 
-export function problem2021_22_1(input) {
+export function problem2021_22_1(input: string[]) {
   let cubes = [];
 
   // first 20 lines are in the range x=-50..50,y=-50..50,z=-50..50
@@ -40,4 +40,4 @@ export function problem2021_22_1(input) {
   return cubes.length;
 }
 
-export function problem2021_22_2(input) {}
+export function problem2021_22_2(input: string[]) {}

@@ -1,4 +1,4 @@
-export const day = 20;
+/* 2021 day 20 */
 export const title = "trench map";
 
 const processInput = (input) => {
@@ -76,7 +76,7 @@ const countLit = (image) => {
   return image.flat().filter((pixel) => pixel === "#").length;
 };
 
-export function problem2021_20_1(input) {
+export function problem2021_20_1(input: string[]) {
   let { algorithm, image } = processInput(input);
   for (let i = 0; i < 2; i++) {
     image = enhance(image, algorithm, i);
@@ -85,7 +85,7 @@ export function problem2021_20_1(input) {
   return countLit(image);
 }
 
-export function problem2021_20_2(input) {
+export function problem2021_20_2(input: string[]) {
   let { algorithm, image } = processInput(input);
   for (let i = 0; i < 50; i++) {
     image = enhance(image, algorithm, i);

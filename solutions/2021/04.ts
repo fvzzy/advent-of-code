@@ -1,4 +1,4 @@
-export const day = 4;
+/* 2021 day 4 */
 export const title = "giant squid";
 
 const processInput = (input) => {
@@ -116,10 +116,10 @@ const winningBingoScore = (input, lastBoardWins = false) => {
   }
 };
 
-export function problem2021_4_1(input) {
+export function problem2021_4_1(input: string[]) {
   return winningBingoScore(input);
 }
 
-export function problem2021_4_2(input) {
+export function problem2021_4_2(input: string[]) {
   return winningBingoScore(input, true);
 }

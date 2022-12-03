@@ -1,4 +1,4 @@
-export const day = 9;
+/* 2021 day 9 */
 export const title = "smoke basin";
 
 const findLowPoints = (heightMap) => {
@@ -20,14 +20,14 @@ const findLowPoints = (heightMap) => {
   return lowPoints;
 };
 
-export function problem2021_9_1(input) {
+export function problem2021_9_1(input: string[]) {
   const heightMap = input.map((line) => line.split("").map(Number));
   const lowPoints = findLowPoints(heightMap);
 
   return lowPoints.reduce((riskSum, point) => riskSum + heightMap[point.y][point.x] + 1, 0);
 }
 
-export function problem2021_9_2(input) {
+export function problem2021_9_2(input: string[]) {
   const heightMap = input.map((line) => line.split("").map(Number));
   const lowPoints = findLowPoints(heightMap);
   let basins = [];

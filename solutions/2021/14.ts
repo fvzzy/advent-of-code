@@ -1,4 +1,4 @@
-export const day = 14;
+/* 2021 day 14 */
 export const title = "extended polymerization";
 
 const processInstructions = (input) => {
@@ -25,7 +25,7 @@ const maxElementCountDiff = (counts) => {
   return maxFrequency - minFrequency;
 };
 
-export function problem2021_14_1(input) {
+export function problem2021_14_1(input: string[]) {
   const { polymer: _polymer, rules } = processInstructions(input);
   let polymer = _polymer;
 
@@ -47,7 +47,7 @@ export function problem2021_14_1(input) {
   return maxElementCountDiff(counts);
 }
 
-export function problem2021_14_2(input) {
+export function problem2021_14_2(input: string[]) {
   const { polymer, rules } = processInstructions(input);
 
   // save frequency counts of each pair of characters

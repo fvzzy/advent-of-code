@@ -1,4 +1,4 @@
-export const day = 6;
+/* 2021 day 6 */
 export const title = "lanternfish";
 
 // iterative solution using strings for storage, for posterity
@@ -39,10 +39,10 @@ const population = (input, days) => {
   return populationsByTimer.reduce((fish, sum) => fish + sum, 0);
 };
 
-export function problem2021_6_1(input) {
+export function problem2021_6_1(input: string[]) {
   return population(input, 80);
 }
 
-export function problem2021_6_2(input) {
+export function problem2021_6_2(input: string[]) {
   return population(input, 256);
 }

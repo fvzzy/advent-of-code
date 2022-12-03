@@ -1,4 +1,4 @@
-export const day = 13;
+/* 2021 day 13 */
 export const title = "transparent origami";
 
 const readInstructions = (input) => {
@@ -73,14 +73,14 @@ const countDots = (paper) => {
   return dotCount;
 };
 
-export function problem2021_13_1(input) {
+export function problem2021_13_1(input: string[]) {
   const { dots, folds } = readInstructions(input);
   let paper = markDots(dots);
   paper = fold(paper, [folds[0]]);
   return countDots(paper);
 }
 
-export function problem2021_13_2(input) {
+export function problem2021_13_2(input: string[]) {
   const { dots, folds } = readInstructions(input);
   let paper = markDots(dots);
   return fold(paper, folds);

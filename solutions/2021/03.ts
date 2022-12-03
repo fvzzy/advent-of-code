@@ -1,9 +1,9 @@
-export const day = 3;
+/* 2021 day 3 */
 export const title = "binary diagnostic";
 
 const binaryToInt = (binaryString) => parseInt(binaryString, 2);
 
-export function problem2021_3_1(input) {
+export function problem2021_3_1(input: string[]) {
   let gammaRate = "";
   let epsilonRate = "";
 
@@ -28,7 +28,7 @@ export function problem2021_3_1(input) {
   return binaryToInt(gammaRate) * binaryToInt(epsilonRate);
 }
 
-export function problem2021_3_2(input) {
+export function problem2021_3_2(input: string[]) {
   let o2Candidates = input.slice();
   let co2Candidates = input.slice();
 

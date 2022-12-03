@@ -1,4 +1,4 @@
-export const day = 11;
+/* 2021 day 11 */
 export const title = "dumbo octopus";
 
 const octopiMap = (input) => input.map((line) => line.split("").map(Number));
@@ -59,7 +59,7 @@ export const step = (octopi) => {
   return { octopi, flashes: flashed.size };
 };
 
-export function problem2021_11_1(input) {
+export function problem2021_11_1(input: string[]) {
   const octopi = octopiMap(input);
   let steps = 100;
   let flashes = 0;
@@ -67,7 +67,7 @@ export function problem2021_11_1(input) {
   return flashes;
 }
 
-export function problem2021_11_2(input) {
+export function problem2021_11_2(input: string[]) {
   const octopi = octopiMap(input);
   let steps = 1;
   while (step(octopi).flashes !== 100) steps++;

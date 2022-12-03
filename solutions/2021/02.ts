@@ -1,7 +1,7 @@
-export const day = 2;
+/* 2021 day 2 */
 export const title = "dive!";
 
-export function problem2021_2_1(input) {
+export function problem2021_2_1(input: string[]) {
   let x = 0;
   let y = 0;
 
@@ -22,7 +22,7 @@ export function problem2021_2_1(input) {
   return x * y;
 }
 
-export function problem2021_2_2(input) {
+export function problem2021_2_2(input: string[]) {
   let x = 0;
   let y = 0;
   let aim = 0;

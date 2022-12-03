@@ -1,4 +1,4 @@
-export const day = 12;
+/* 2021 day 12 */
 export const title = "passage pathing";
 
 const createAdjacencyList = (input) => {
@@ -47,7 +47,7 @@ const mapPaths = (options) => {
   return paths;
 };
 
-export function problem2021_12_1(input) {
+export function problem2021_12_1(input: string[]) {
   const adjacencyList = createAdjacencyList(input);
   const isInvalidVisitFn = (smallCaveVisits) => Object.values(smallCaveVisits).some((visitCount) => visitCount > 1);
 
@@ -55,7 +55,7 @@ export function problem2021_12_1(input) {
   return paths.length;
 }
 
-export function problem2021_12_2(input) {
+export function problem2021_12_2(input: string[]) {
   const adjacencyList = createAdjacencyList(input);
   const isInvalidVisitFn = (smallCaveVisits) => {
     const backtrackedCaves = Object.values(smallCaveVisits).filter((visitCount) => visitCount > 1);

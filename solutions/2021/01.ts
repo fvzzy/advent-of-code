@@ -1,7 +1,7 @@
-export const day = 1;
+/* 2021 day 1 */
 export const title = "sonar sweep";
 
-export function problem2021_1_1(input) {
+export function problem2021_1_1(input: string[]) {
   const depths = input.map(Number);
 
   let increases = 0;
@@ -12,7 +12,7 @@ export function problem2021_1_1(input) {
   return increases;
 }
 
-export function problem2021_1_2(input) {
+export function problem2021_1_2(input: string[]) {
   const depths = input.map(Number);
 
   let increases = 0;

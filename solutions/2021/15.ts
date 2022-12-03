@@ -1,4 +1,4 @@
-export const day = 15;
+/* 2021 day 15 */
 export const title = "chiton";
 
 const adjacencyList = (caveMap) => {
@@ -94,14 +94,14 @@ const generateFullMap = (input, scale) => {
   return map;
 };
 
-export function problem2021_15_1(input) {
+export function problem2021_15_1(input: string[]) {
   const caveMap = input.map((line) => line.split("").map(Number));
   const graph = adjacencyList(caveMap);
   const endNode = `${input[0].length - 1}_${input.length - 1}`;
   return shortestPath(graph, "0_0", endNode);
 }
 
-export function problem2021_15_2(input) {
+export function problem2021_15_2(input: string[]) {
   const scale = 5;
   const fullMap = generateFullMap(input, scale);
   const graph = adjacencyList(fullMap);

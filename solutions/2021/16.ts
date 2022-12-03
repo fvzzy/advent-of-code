@@ -1,4 +1,4 @@
-export const day = 16;
+/* 2021 day 16 */
 export const title = "packet decoder";
 
 export const hexToPacket = (hexString) => {
@@ -117,7 +117,7 @@ const evaluatePacket = (packet) => {
   }
 };
 
-export function problem2021_16_1(input) {
+export function problem2021_16_1(input: string[]) {
   const sum = (arr) => arr.reduce((sum, curr) => curr + sum, 0);
   const sumProperty = (prop) => (packet) =>
     packet[prop] + (packet.subpackets ? sum(packet.subpackets.map(sumProperty(prop))) : 0);
@@ -126,7 +126,7 @@ export function problem2021_16_1(input) {
   return sumProperty("version")(transmission);
 }
 
-export function problem2021_16_2(input) {
+export function problem2021_16_2(input: string[]) {
   const transmission = decodeTransmission(input[0]);
   return evaluatePacket(transmission);
 }
