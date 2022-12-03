@@ -14,8 +14,8 @@ export function problem2021_2_1(input: string[]) {
     if (!move.length) continue; // ignore empty lines in the file
 
     const [direction, distance] = move.split(" ");
-    x += coords[direction][0] * distance;
-    y += coords[direction][1] * distance;
+    x += coords[direction][0] * Number(distance);
+    y += coords[direction][1] * Number(distance);
   }
 
   return x * y;
