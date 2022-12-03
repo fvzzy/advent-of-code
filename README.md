@@ -1,20 +1,10 @@
-# Advent of Code 2021
+# Advent of Code
 
-Solutions for [Advent of Code 2021](https://adventofcode.com/2021/).
+Solutions for [Advent of Code](https://adventofcode.com/).
 
 ## Usage
 
-### Fetching inputs
-
-I've included a [small helper](https://github.com/fvzzy/advent-of-code-2021/blob/main/lib/utils.js#L6-L28) to fetch and cache the supplied inputs for a given day. Inputs are saved to `/inputs/{day}.txt`.
-
-Store a session token in `.env` to use it, e.g:
-
-```
-echo SESSION_TOKEN={your token here} > .env
-```
-
-### Running solutions
+### Setup
 
 Install dependencies:
 
@@ -22,32 +12,46 @@ Install dependencies:
 npm install
 ```
 
-Compile JavaScript files:
+Compile JavaScript from TypeScript:
 
 ```
 npm build
 ```
 
-Choose a day and run `answers.ts` (uses `-r dotenv/config` flag to read in your session token from `.env`), e.g:
+### Fetching inputs
+
+I've included a [small helper](https://github.com/fvzzy/advent-of-code-2021/blob/main/lib/getInput.js) to fetch and cache the inputs for a given day. Inputs are saved to `/inputs/${year}-{day}.txt`.
+
+Store a session token in `.env` to use it:
 
 ```
-npm run answers 1
+echo SESSION_TOKEN={your-token-here} > .env
+```
+
+### Running solutions
+
+Pick a year and day, and run `answers.js`:
+
+```
+npm run answers 2021 1
 ```
 
 Will output something like:
 
 ```
 > advent-of-code-2021@1.0.0 answers
-> node -r dotenv/config ./dist/scripts/answers.js "1"
+> node -r dotenv/config ./dist/scripts/answers.js 2021 1
 
---- day 1: sonar sweep ---
+--- 2021 day 1: sonar sweep ---
 part 1: 1553
+⚡ 1: 0.832ms
 part 2: 1597
+⚡ 2: 0.438ms
 ```
 
 ### Tests
 
-I've added happy-path tests using the example inputs for all problems. Very occasionally, I've also added tests for helper functions.
+I've included happy-path tests using the example inputs for all problems. Occasionally, I've also added tests for helper functions.
 
 Run them with Jest:
 
