@@ -49,6 +49,28 @@ part 2: 1597
 ⚡ 2: 0.438ms
 ```
 
+### Adding solutions
+
+If you'd like to add solutions (or fork this as a starter framework):
+
+1. Remove existing solutions (optional)
+   ```
+   rm -rf solutions
+   ```
+2. Generate new template files by `year` and `day`:
+
+   ```
+   npm run add-files {year} {day} {title}
+   ```
+
+   e.g.
+
+   ```
+   npm run add-files 2021 1 "sonar sweep"
+   ```
+
+3. [Run your solution](https://github.com/fvzzy/advent-of-code#running-solutions).
+
 ### Tests
 
 I've included happy-path tests using the example inputs for all problems. Occasionally, I've also added tests for helper functions.
