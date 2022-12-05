@@ -19,7 +19,7 @@ describe(`2022 day 5: "supply stacks"`, () => {
     });
 
     test("part 2 solution works", () => {
-      expect(problem2022_5_2(exampleInput)).toBe(undefined);
+      expect(problem2022_5_2(exampleInput)).toBe("MCD");
     });
   });
 });
