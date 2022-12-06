@@ -17,7 +17,11 @@ describe(`2022 day 6: "${title2022_6}"`, () => {
     });
 
     test("part 2 solution works", () => {
-      expect(problem2022_6_2(exampleInput1)).toBe(undefined);
+      expect(problem2022_6_2(exampleInput1)).toBe(19);
+      expect(problem2022_6_2(exampleInput2)).toBe(23);
+      expect(problem2022_6_2(exampleInput3)).toBe(23);
+      expect(problem2022_6_2(exampleInput4)).toBe(29);
+      expect(problem2022_6_2(exampleInput5)).toBe(26);
     });
   });
 });
