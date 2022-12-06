@@ -10,15 +10,15 @@ export function problem2022_6_1(input: string[]) {
   let i = 0;
   for (let x = 0; x < markerLength; x++) counts[buffer[x]] += 1;
 
-  while (i < buffer.length - 3) {
-    if (
-      counts[buffer[i]] === 1 &&
-      counts[buffer[i + 1]] === 1 &&
-      counts[buffer[i + 2]] === 1 &&
-      counts[buffer[i + 3]] === 1
-    ) {
-      return i + markerLength;
+  while (i < buffer.length - markerLength - 1) {
+    let hasDuplicates = false;
+    for (let x = 0; x < markerLength; x++) {
+      if (counts[buffer[i + x]] !== 1) {
+        hasDuplicates = true;
+        break;
+      }
     }
+    if (!hasDuplicates) return i + markerLength;
     counts[buffer[i]] -= 1;
     counts[buffer[i + markerLength]] += 1;
     i += 1;
@@ -34,25 +34,15 @@ export function problem2022_6_2(input: string[]) {
   let i = 0;
   for (let x = 0; x < markerLength; x++) counts[buffer[x]] += 1;
 
-  while (i < buffer.length - 13) {
-    if (
-      counts[buffer[i]] === 1 &&
-      counts[buffer[i + 1]] === 1 &&
-      counts[buffer[i + 2]] === 1 &&
-      counts[buffer[i + 3]] === 1 &&
-      counts[buffer[i + 4]] === 1 &&
-      counts[buffer[i + 5]] === 1 &&
-      counts[buffer[i + 6]] === 1 &&
-      counts[buffer[i + 7]] === 1 &&
-      counts[buffer[i + 8]] === 1 &&
-      counts[buffer[i + 9]] === 1 &&
-      counts[buffer[i + 10]] === 1 &&
-      counts[buffer[i + 11]] === 1 &&
-      counts[buffer[i + 12]] === 1 &&
-      counts[buffer[i + 13]] === 1
-    ) {
-      return i + markerLength;
+  while (i < buffer.length - markerLength - 1) {
+    let hasDuplicates = false;
+    for (let x = 0; x < markerLength; x++) {
+      if (counts[buffer[i + x]] !== 1) {
+        hasDuplicates = true;
+        break;
+      }
     }
+    if (!hasDuplicates) return i + markerLength;
     counts[buffer[i]] -= 1;
     counts[buffer[i + markerLength]] += 1;
     i += 1;
