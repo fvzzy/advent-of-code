@@ -1,4 +1,5 @@
-/* 2021 day 5: "hydrothermal venture" */
+// https://adventofcode.com/2021/day/5
+export const title2021_5 = "hydrothermal venture";
 
 const inputToCoords = (inputLine) => {
   const [_, startX, startY, endX, endY] = inputLine.match(/^(\d+),(\d+) -> (\d+),(\d+)$/).map(Number);

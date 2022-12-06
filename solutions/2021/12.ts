@@ -1,4 +1,5 @@
-/* 2021 day 12: "passage pathing" */
+// https://adventofcode.com/2021/day/12
+export const title2021_12 = "passage pathing";
 
 const createAdjacencyList = (input) => {
   let result = {};

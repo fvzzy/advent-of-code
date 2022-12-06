@@ -1,4 +1,5 @@
-/* 2022 day 2: "rock paper scissors" */
+// https://adventofcode.com/2022/day/2
+export const title2022_2 = "rock paper scissors";
 
 export function problem2022_2_1(input: string[]) {
   const shapeScore = { X: 1, Y: 2, Z: 3 };

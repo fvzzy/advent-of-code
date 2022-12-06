@@ -1,4 +1,5 @@
-/* 2021 day 22: "reactor reboot" */
+// https://adventofcode.com/2021/day/22
+export const title2021_22 = "reactor reboot";
 
 const stepToRange = (step) => {
   const [x1, x2, y1, y2, z1, z2] = step.match(/\-?\d+/g).map(Number);

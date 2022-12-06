@@ -1,4 +1,5 @@
-/* 2021 day 4: "giant squid" */
+// https://adventofcode.com/2021/day/4
+export const title2021_4 = "giant squid";
 
 const processInput = (input) => {
   const numbers = input[0].split(",");

@@ -7,7 +7,7 @@ const rawInput = await getInput(year, day);
 const input = rawInput.split("\n");
 input.pop();
 
-const { problem1, problem2, title } = solutions[`${year}_${day}`];
+const { p1: problem1, p2: problem2, title } = solutions[`${year}_${day}`];
 console.log(`--- ${year} day ${day}: ${title} ---`);
 
 const timePart1 = "⚡1";

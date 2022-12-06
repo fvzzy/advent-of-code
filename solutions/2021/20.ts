@@ -1,4 +1,5 @@
-/* 2021 day 20: "trench map" */
+// https://adventofcode.com/2021/day/20
+export const title2021_20 = "trench map";
 
 const processInput = (input) => {
   const algorithm = input[0];

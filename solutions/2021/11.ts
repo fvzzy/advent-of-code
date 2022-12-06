@@ -1,4 +1,5 @@
-/* 2021 day 11: "dumbo octopus" */
+// https://adventofcode.com/2021/day/11
+export const title2021_11 = "dumbo octopus";
 
 const octopiMap = (input) => input.map((line) => line.split("").map(Number));
 

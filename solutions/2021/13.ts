@@ -1,4 +1,5 @@
-/* 2021 day 13: "transparent origami" */
+// https://adventofcode.com/2021/day/13
+export const title2021_13 = "transparent origami";
 
 const readInstructions = (input) => {
   let line = -1;

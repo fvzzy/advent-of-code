@@ -1,4 +1,5 @@
-/* 2021 day 21: "dirac dice" */
+// https://adventofcode.com/2021/day/21
+export const title2021_21 = "dirac dice";
 
 const startingPositions = (input) => {
   const p1 = Number(input[0].split(": ")[1]);

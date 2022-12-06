@@ -1,4 +1,5 @@
-/* 2021 day 9: "smoke basin" */
+// https://adventofcode.com/2021/day/9
+export const title2021_9 = "smoke basin";
 
 const findLowPoints = (heightMap) => {
   let lowPoints = [];

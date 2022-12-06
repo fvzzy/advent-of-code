@@ -1,4 +1,5 @@
-/* 2021 day 15: "chiton" */
+// https://adventofcode.com/2021/day/15
+export const title2021_15 = "chiton";
 
 const adjacencyList = (caveMap) => {
   const directions = [

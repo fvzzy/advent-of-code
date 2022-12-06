@@ -1,4 +1,5 @@
-/* 2021 day 16: "packet decoder" */
+// https://adventofcode.com/2021/day/16
+export const title2021_16 = "packet decoder";
 
 export const hexToPacket = (hexString) => {
   const map = {

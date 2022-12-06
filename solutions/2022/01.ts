@@ -1,4 +1,5 @@
-/* 2022 day 1: "calorie counting" */
+// https://adventofcode.com/2022/day/1
+export const title2022_1 = "calorie counting";
 
 export function problem2022_1_1(input: string[]) {
   let max = 0;

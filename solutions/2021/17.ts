@@ -1,4 +1,5 @@
-/* 2021 day 17: "trick shot" */
+// https://adventofcode.com/2021/day/17
+export const title2021_17 = "trick shot";
 
 const parseTargetArea = (input) => input[0].match(/\-?\d+/g);
 

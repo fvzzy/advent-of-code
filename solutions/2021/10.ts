@@ -1,4 +1,5 @@
-/* 2021 day 10: "syntax scoring" */
+// https://adventofcode.com/2021/day/10
+export const title2021_10 = "syntax scoring";
 
 const illegalCharScore = {
   ")": 3,

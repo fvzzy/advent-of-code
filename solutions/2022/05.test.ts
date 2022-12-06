@@ -1,6 +1,6 @@
-import { problem2022_5_1, problem2022_5_2 } from "./05";
+import { problem2022_5_1, problem2022_5_2, title2022_5 } from "./05";
 
-describe(`2022 day 5: "supply stacks"`, () => {
+describe(`2022 day 5: ${title2022_5}`, () => {
   describe("example inputs", () => {
     const exampleInput = [
       "    [D]    ",

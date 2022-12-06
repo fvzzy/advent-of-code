@@ -1,4 +1,5 @@
-/* 2021 day 3: "binary diagnostic" */
+// https://adventofcode.com/2021/day/3
+export const title2021_3 = "binary diagnostic";
 
 const binaryToInt = (binaryString) => parseInt(binaryString, 2);
 

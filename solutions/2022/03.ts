@@ -1,4 +1,5 @@
-/* 2022 day 3: "rucksack reorganization" */
+// https://adventofcode.com/2022/day/3
+export const title2022_3 = "rucksack reorganization";
 
 const itemTypes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const itemPriority = {};

@@ -1,4 +1,5 @@
-/* 2022 day 5: "supply stacks" */
+// https://adventofcode.com/2022/day/5
+export const title2022_5 = "supply stacks";
 
 export function problem2022_5_1(input: string[]) {
   const stacks: Record<number, string[]> = {};

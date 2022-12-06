@@ -1,4 +1,5 @@
-/* 2022 day 4: "camp cleanup" */
+// https://adventofcode.com/2022/day/4
+export const title2022_4 = "camp cleanup";
 
 export function problem2022_4_1(input: string[]) {
   let pairs = 0;
