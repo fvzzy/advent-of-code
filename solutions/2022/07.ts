@@ -2,45 +2,27 @@
 export const title2022_7 = "no space left on device";
 
 function generateFilesizesByPath(input: string[]) {
-  const files = { "/": {} }; // TODO: figure out how to type recursive structures
   const filesizes: Record<string, number> = {};
   let currentPath: string[] = [];
-  let currentDir;
-
   let cursor: number = 0;
 
   while (cursor < input.length) {
-    let line = input[cursor];
+    const line = input[cursor];
     const [_, command, arg] = line.split(" ");
-    let printingOutput = false;
     if (command === "cd") {
       if (arg === "/") {
-        currentPath = ["/"]; // reset back to root
-        currentDir = files["/"];
+        currentPath = ["/"];
       } else if (arg === "..") {
         currentPath.pop();
-        currentDir = files; // one level above root
-        for (let dir of currentPath) {
-          // TODO: rewrite this using a "parent" cursor for each directory
-          currentDir = currentDir[dir];
-        }
       } else {
         currentPath.push(arg);
-        if (!currentDir[arg]) currentDir[arg] = {};
-        currentDir = currentDir[arg];
       }
+      cursor++;
     } else if (command === "ls") {
-      printingOutput = true;
       while (++cursor < input.length && input[cursor][0] !== "$") {
         const output = input[cursor];
-        if (output[0] === "d") {
-          // directory
-          const dir = output.split(" ")[1];
-          if (!currentDir[dir]) currentDir[dir] = {};
-        } else {
-          // file
-          const [size, name] = output.split(" ");
-          currentDir[name] = size;
+        if (output[0] !== "d") {
+          const size = output.split(" ")[0];
           for (let x = 1; x < currentPath.length + 1; x++) {
             const nestedDir = currentPath.slice(0, x).join("-");
             if (!filesizes[nestedDir]) filesizes[nestedDir] = 0;
@@ -49,7 +31,6 @@ function generateFilesizesByPath(input: string[]) {
         }
       }
     }
-    !printingOutput && cursor++;
   }
 
   return filesizes;
