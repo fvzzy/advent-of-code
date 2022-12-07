@@ -2,14 +2,15 @@
 export const title2022_7 = "no space left on device";
 
 export function problem2022_7_1(input: string[]) {
-  const files = { "/": {} };
-  const filesizes = {};
-  let currentPath = [];
-  let currentDir = undefined;
-  let i = 0;
+  const files = { "/": {} }; // TODO: figure out how to type recursive structures
+  const filesizes: Record<string, number> = {};
+  let currentPath: string[] = [];
+  let currentDir;
 
-  while (i < input.length) {
-    let line = input[i];
+  let cursor: number = 0;
+
+  while (cursor < input.length) {
+    let line = input[cursor];
     const [_, command, arg] = line.split(" ");
     let printingOutput = false;
     if (command === "cd") {
@@ -20,6 +21,7 @@ export function problem2022_7_1(input: string[]) {
         currentPath.pop();
         currentDir = files; // one level above root
         for (let dir of currentPath) {
+          // TODO: rewrite this using a "parent" cursor for each directory
           currentDir = currentDir[dir];
         }
       } else {
@@ -29,24 +31,25 @@ export function problem2022_7_1(input: string[]) {
       }
     } else if (command === "ls") {
       printingOutput = true;
-      while (++i < input.length && input[i][0] !== "$") {
-        const output = input[i];
+      while (++cursor < input.length && input[cursor][0] !== "$") {
+        const output = input[cursor];
         if (output[0] === "d") {
           // directory
-          const [_, dir] = output.split(" ");
+          const dir = output.split(" ")[1];
           if (!currentDir[dir]) currentDir[dir] = {};
         } else {
           // file
           const [size, name] = output.split(" ");
           currentDir[name] = size;
-          for (let dir of currentPath) {
-            if (!filesizes[dir]) filesizes[dir] = 0;
-            filesizes[dir] += Number(size);
+          for (let x = 1; x < currentPath.length + 1; x++) {
+            const nestedDir = currentPath.slice(0, x).join("-");
+            if (!filesizes[nestedDir]) filesizes[nestedDir] = 0;
+            filesizes[nestedDir] += Number(size);
           }
         }
       }
     }
-    !printingOutput && i++;
+    !printingOutput && cursor++;
   }
 
   return Object.values(filesizes)
