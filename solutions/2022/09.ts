@@ -30,4 +30,30 @@ export function problem2022_9_1(input: string[]) {
   return tPositions.size;
 }
 
-export function problem2022_9_2(input: string[]) {}
+export function problem2022_9_2(input: string[]) {
+  const segments = [...Array(10)].map(() => [0, 0]);
+  const tailPositions = new Set();
+
+  for (let move of input) {
+    const [dir, steps] = move.split(" ");
+
+    for (let step = Number(steps); step > 0; step--) {
+      // first move head
+      segments[0] = segments[0].map((xy, idx) => xy + MOVES[dir][idx]);
+
+      // then body
+      for (let i = 1; i < segments.length; i++) {
+        const next = segments[i - 1];
+        const curr = segments[i];
+
+        if (Math.abs(next[0] - curr[0]) >= 2 || Math.abs(next[1] - curr[1]) >= 2) {
+          segments[i] = curr.map((_, idx) => next[idx] - MOVES[dir][idx]);
+        }
+
+        if (i === 9) tailPositions.add(`${segments[i][0]}-${segments[i][1]}`);
+      }
+    }
+  }
+
+  return tailPositions.size;
+}
