@@ -1,33 +1,28 @@
 // https://adventofcode.com/2022/day/9
 export const title2022_9 = "rope bridge";
 
+const MOVES = { U: [0, 1], D: [0, -1], L: [-1, 0], R: [1, 0] };
+
 export function problem2022_9_1(input: string[]) {
-  const MOVES = { U: [0, 1], D: [0, -1], L: [-1, 0], R: [1, 0] };
-
   let h = [0, 0];
-  let tX = h[0];
-  let tY = h[1];
-  const tPositions = new Set();
+  let t = [0, 0];
+  const tailPositions = new Set();
 
-  for (let line = 0; line < input.length; line++) {
-    const move = input[line];
+  for (let move of input) {
     const [dir, steps] = move.split(" ");
 
     for (let step = Number(steps); step > 0; step--) {
-      const hX = h[0] + MOVES[dir][0];
-      const hY = h[1] + MOVES[dir][1];
+      h = h.map((xy, idx) => xy + MOVES[dir][idx]);
 
-      h = [hX, hY];
-      if (Math.abs(hX - tX) >= 2 || Math.abs(hY - tY) >= 2) {
-        tX = hX - MOVES[dir][0];
-        tY = hY - MOVES[dir][1];
+      if (Math.abs(h[0] - t[0]) >= 2 || Math.abs(h[1] - t[1]) >= 2) {
+        t = t.map((_, idx) => h[idx] - MOVES[dir][idx]);
       }
 
-      tPositions.add(`${tX}-${tY}`);
+      tailPositions.add(`${t[0]}-${t[1]}`);
     }
   }
 
-  return tPositions.size;
+  return tailPositions.size;
 }
 
 export function problem2022_9_2(input: string[]) {
