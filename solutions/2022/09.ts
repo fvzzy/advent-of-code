@@ -26,29 +26,59 @@ export function problem2022_9_1(input: string[]) {
 }
 
 export function problem2022_9_2(input: string[]) {
-  const segments = [...Array(10)].map(() => [0, 0]);
+  const knots = [...Array(10)].map(() => [0, 0]);
   const tailPositions = new Set();
 
-  for (let move of input) {
-    const [dir, steps] = move.split(" ");
+  for (let headMove of input) {
+    const [headMoveDir, headMoveSteps] = headMove.split(" ");
 
-    for (let step = Number(steps); step > 0; step--) {
-      // first move head
-      segments[0] = segments[0].map((xy, idx) => xy + MOVES[dir][idx]);
+    for (let step = Number(headMoveSteps); step > 0; step--) {
+      // move head
+      knots[0][0] += MOVES[headMoveDir][0];
+      knots[0][1] += MOVES[headMoveDir][1];
 
-      // then body
-      for (let i = 1; i < segments.length; i++) {
-        const next = segments[i - 1];
-        const curr = segments[i];
+      let lastHeadMove = MOVES[headMoveDir];
 
-        if (Math.abs(next[0] - curr[0]) >= 2 || Math.abs(next[1] - curr[1]) >= 2) {
-          segments[i] = curr.map((_, idx) => next[idx] - MOVES[dir][idx]);
+      // move body
+      for (let i = 1; i < knots.length; i++) {
+        const currHead = knots[i - 1];
+        const curr = knots[i];
+        const [prevX, prevY] = knots[i];
+
+        if (Math.abs(currHead[0] - curr[0]) >= 2 || Math.abs(currHead[1] - curr[1]) >= 2) {
+          if (lastHeadMove[0] && lastHeadMove[1]) {
+            // diagonal move
+            knots[i][0] += lastHeadMove[0];
+            knots[i][1] += lastHeadMove[1];
+          } else if (lastHeadMove[0]) {
+            // horizontal move
+            knots[i][0] += lastHeadMove[0];
+
+            if (currHead[1] !== curr[1]) {
+              knots[i][1] = currHead[1];
+            }
+          } else if (lastHeadMove[1]) {
+            // vertical move
+            knots[i][1] += lastHeadMove[1];
+
+            if (currHead[0] !== curr[0]) {
+              knots[i][0] = currHead[0];
+            }
+          }
+          lastHeadMove = [knots[i][0] - prevX, knots[i][1] - prevY];
+          //   console.log(`moved knot ${i}`);
+          //   console.log(`next head move ${lastHeadMove}`);
         }
 
-        if (i === 9) tailPositions.add(`${segments[i][0]}-${segments[i][1]}`);
+        if (i === 9) tailPositions.add(`${knots[i][0]}-${knots[i][1]}`);
       }
+
+      //   console.log(`direction: ${headMoveDir}, step: ${Number(headMoveSteps) - step}`);
+      //   console.table(knots);
     }
   }
+
+  //   console.log(tailPositions);
 
   return tailPositions.size;
 }
