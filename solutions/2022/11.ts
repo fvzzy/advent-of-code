@@ -17,7 +17,7 @@ function wrangleMonkeys(input: string[]) {
     const ifFalse = Number(input[i++].replace("If false: throw to monkey ", ""));
     const test = new Function("worry", `return worry % ${divisor} === 0 ? ${ifTrue} : ${ifFalse}`);
 
-    monkeys[monkey] = { items, operation, test, inspections: 0 };
+    monkeys[monkey] = { items, operation, test, inspections: 0, divisor };
     i++;
   }
 
@@ -48,6 +48,7 @@ export function problem2022_11_1(input: string[]) {
 
 export function problem2022_11_2(input: string[]) {
   const monkeys = wrangleMonkeys(input);
+  const productOfDivisors = monkeys.map((monkey) => monkey.divisor).reduce((acc, curr) => acc * curr, 1);
 
   for (let round = 10000; round > 0; round--) {
     for (let i = 0; i < monkeys.length; i++) {
@@ -56,7 +57,7 @@ export function problem2022_11_2(input: string[]) {
 
       while (items.length) {
         const item = items.shift();
-        const worry = operation(item);
+        const worry = operation(item) % productOfDivisors;
         const receipient = test(worry);
         monkeys[receipient].items.push(worry);
       }
