@@ -1,30 +1,36 @@
 // https://adventofcode.com/2022/day/12
 export const title2022_12 = "hill climbing algorithm";
 
+type Coordinate = [number, number];
+type ElevationMap = number[][];
+
 function parseInput(input: string[]) {
-  const map: number[][] = [];
-  let start: [number, number];
-  let end: [number, number];
+  const map: ElevationMap = [];
+  let start: Coordinate;
+  let end: Coordinate;
+  let lowestPoints: Coordinate[] = [];
 
   for (let y = 0; y < input.length; y++) {
     map.push([]);
     for (let x = 0; x < input[0].length; x++) {
       if (input[y][x] === "S") {
         start = [x, y];
+        lowestPoints.push([x, y]);
         map[y].push("a".charCodeAt(0));
       } else if (input[y][x] === "E") {
         end = [x, y];
         map[y].push("z".charCodeAt(0));
       } else {
         map[y].push(input[y][x].charCodeAt(0));
+        if (input[y][x] === "a") lowestPoints.push([x, y]);
       }
     }
   }
 
-  return { map, start, end };
+  return { map, start, lowestPoints, end };
 }
 
-function shortestPathBFS(map: number[][], start: [number, number], end: [number, number]) {
+function distanceToEndBFS(map: ElevationMap, start: Coordinate, end: Coordinate) {
   let distance = 0;
   const visited = Array(map.length)
     .fill(null)
@@ -74,7 +80,16 @@ function shortestPathBFS(map: number[][], start: [number, number], end: [number,
 
 export function problem2022_12_1(input: string[]) {
   const { map, start, end } = parseInput(input);
-  return shortestPathBFS(map, start, end);
+  return distanceToEndBFS(map, start, end);
 }
 
-export function problem2022_12_2(input: string[]) {}
+export function problem2022_12_2(input: string[]) {
+  let shortestOfAllPaths = Infinity;
+  const { map, lowestPoints, end } = parseInput(input);
+
+  for (let start of lowestPoints) {
+    shortestOfAllPaths = Math.min(shortestOfAllPaths, distanceToEndBFS(map, start, end));
+  }
+
+  return shortestOfAllPaths;
+}
