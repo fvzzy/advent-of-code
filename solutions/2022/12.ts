@@ -24,47 +24,39 @@ function parseInput(input: string[]) {
   return { map, start, end };
 }
 
-export function problem2022_12_1(input: string[]) {
-  let steps = 0;
-  const dirX = [-1, 1, 0, 0];
-  const dirY = [0, 0, 1, -1];
+function shortestPathBFS(map: number[][], start: [number, number], end: [number, number]) {
+  let distance = 0;
+  const visited = Array(map.length)
+    .fill(null)
+    .map(() => Array(map[0].length).fill(false));
 
-  const {
-    map,
-    start: [sx, sy],
-    end: [ex, ey],
-  } = parseInput(input);
-  const rows = map.length;
-  const cols = map[0].length;
-
-  const rowQueue = [sy];
-  const colQueue = [sx];
+  const queue = [start];
   let nodesLeftCurrentRound = 1;
   let nodesNextRound = 0;
-  let finished = false;
-  const visited = Array(rows)
-    .fill(null)
-    .map(() => Array(cols).fill(false));
 
-  visited[sy][sx] = 1;
+  visited[start[1]][start[0]] = true;
 
-  while (rowQueue.length) {
+  while (queue.length) {
     // or colQueue.length, both should be the same
-    const y = rowQueue.shift();
-    const x = colQueue.shift();
-    if (y === ey && x === ex) {
-      finished = true;
-      break; // wrap this up into while loop condition?
-    }
+    const [x, y] = queue.shift();
+
+    // terminate if we've reached the end
+    if (x === end[0] && y === end[1]) break;
+
     // visit each neighbour
-    for (let i = 0; i < 4; i++) {
-      const adjX = x + dirX[i];
-      const adjY = y + dirY[i];
-      // skip if the calculated cell is out of bounds, higher elevation, or visited
+    for (let [moveX, moveY] of [
+      [0, -1],
+      [0, 1],
+      [-1, 0],
+      [1, 0],
+    ]) {
+      const adjX = x + moveX;
+      const adjY = y + moveY;
+
+      // skip counting this neighbour if it is out of bounds, higher elevation, or visited
       if (!map?.[adjY]?.[adjX] || map[adjY][adjX] - map[y][x] > 1 || visited[adjY][adjX]) continue;
 
-      rowQueue.push(adjY);
-      colQueue.push(adjX);
+      queue.push([adjX, adjY]);
       visited[adjY][adjX] = true;
       nodesNextRound += 1;
     }
@@ -73,11 +65,16 @@ export function problem2022_12_1(input: string[]) {
     if (nodesLeftCurrentRound === 0) {
       nodesLeftCurrentRound = nodesNextRound;
       nodesNextRound = 0;
-      steps += 1;
+      distance += 1;
     }
   }
 
-  return finished ? steps : -1;
+  return distance;
+}
+
+export function problem2022_12_1(input: string[]) {
+  const { map, start, end } = parseInput(input);
+  return shortestPathBFS(map, start, end);
 }
 
 export function problem2022_12_2(input: string[]) {}
