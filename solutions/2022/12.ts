@@ -39,15 +39,18 @@ function distanceToEndBFS(map: ElevationMap, start: Coordinate, end: Coordinate)
   const queue = [start];
   let nodesLeftCurrentRound = 1;
   let nodesNextRound = 0;
+  let successfulExit = false;
 
   visited[start[1]][start[0]] = true;
 
   while (queue.length) {
-    // or colQueue.length, both should be the same
     const [x, y] = queue.shift();
 
     // terminate if we've reached the end
-    if (x === end[0] && y === end[1]) break;
+    if (x === end[0] && y === end[1]) {
+      successfulExit = true;
+      break;
+    }
 
     // visit each neighbour
     for (let [moveX, moveY] of [
@@ -75,7 +78,7 @@ function distanceToEndBFS(map: ElevationMap, start: Coordinate, end: Coordinate)
     }
   }
 
-  return distance;
+  return successfulExit ? distance : Infinity;
 }
 
 export function problem2022_12_1(input: string[]) {
@@ -84,12 +87,6 @@ export function problem2022_12_1(input: string[]) {
 }
 
 export function problem2022_12_2(input: string[]) {
-  let shortestOfAllPaths = Infinity;
   const { map, lowestPoints, end } = parseInput(input);
-
-  for (let start of lowestPoints) {
-    shortestOfAllPaths = Math.min(shortestOfAllPaths, distanceToEndBFS(map, start, end));
-  }
-
-  return shortestOfAllPaths;
+  return Math.min(...lowestPoints.map((start) => distanceToEndBFS(map, start, end)));
 }
