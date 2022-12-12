@@ -24,39 +24,60 @@ function parseInput(input: string[]) {
   return { map, start, end };
 }
 
-function buildGraph(map: number[][]) {
-  const directions = [
-    [0, -1],
-    [0, 1],
-    [-1, 0],
-    [1, 0],
-  ];
+export function problem2022_12_1(input: string[]) {
+  let steps = 0;
+  const dirX = [-1, 1, 0, 0];
+  const dirY = [0, 0, 1, -1];
 
-  let adjacencyList = {};
-  for (let y = 0; y < map.length; y++) {
-    for (let x = 0; x < map[0].length; x++) {
-      const node = `${x},${y}`;
-      adjacencyList[node] = {};
+  const {
+    map,
+    start: [sx, sy],
+    end: [ex, ey],
+  } = parseInput(input);
+  const rows = map.length;
+  const cols = map[0].length;
 
-      for (let [shiftX, shiftY] of directions) {
-        const [adjX, adjY] = [shiftX + x, shiftY + y];
-        const adjKey = `${adjX},${adjY}`;
-        if (map[adjY]?.[adjX]) adjacencyList[node][adjKey] = map[adjY][adjX];
-      }
+  const rowQueue = [sy];
+  const colQueue = [sx];
+  let nodesLeftCurrentRound = 1;
+  let nodesNextRound = 0;
+  let finished = false;
+  const visited = Array(rows)
+    .fill(null)
+    .map(() => Array(cols).fill(false));
+
+  visited[sy][sx] = 1;
+
+  while (rowQueue.length) {
+    // or colQueue.length, both should be the same
+    const y = rowQueue.shift();
+    const x = colQueue.shift();
+    if (y === ey && x === ex) {
+      finished = true;
+      break; // wrap this up into while loop condition?
+    }
+    // visit each neighbour
+    for (let i = 0; i < 4; i++) {
+      const adjX = x + dirX[i];
+      const adjY = y + dirY[i];
+      // skip if the calculated cell is out of bounds, higher elevation, or visited
+      if (!map?.[adjY]?.[adjX] || map[adjY][adjX] - map[y][x] > 1 || visited[adjY][adjX]) continue;
+
+      rowQueue.push(adjY);
+      colQueue.push(adjX);
+      visited[adjY][adjX] = true;
+      nodesNextRound += 1;
+    }
+
+    nodesLeftCurrentRound -= 1;
+    if (nodesLeftCurrentRound === 0) {
+      nodesLeftCurrentRound = nodesNextRound;
+      nodesNextRound = 0;
+      steps += 1;
     }
   }
 
-  return { adjacencyList };
-}
-
-export function problem2022_12_1(input: string[]) {
-  let steps = 0;
-  const { map, start, end } = parseInput(input);
-  const adjacencyList = buildGraph(map);
-
-  console.log(adjacencyList);
-
-  return steps;
+  return finished ? steps : -1;
 }
 
 export function problem2022_12_2(input: string[]) {}
