@@ -7,25 +7,15 @@ type NestedPacketData = PacketData<number>;
 
 export function compareLists(left, right): boolean {
   for (let i = 0; i < left.length; i++) {
-    if (Array.isArray(left[i]) && Array.isArray(right[i])) {
+    if (!Array.isArray(left[i]) && !Array.isArray(right[i])) {
+      if (!right[i] || left[i] > right[i]) return false;
+    } else {
+      if (!Array.isArray(left[i])) left[i] = [left[i]];
+      if (!Array.isArray(right[i])) right[i] = [right[i]];
       return compareLists(left[i], right[i]);
     }
-    if (!right[i] || left[i] > right[i]) return false;
   }
   return true;
-}
-
-export function balanceParens(left: string, right: string): Record<"left" | "right", string> {
-  let i = 0;
-  while (left[i]) {
-    if (left[i] === "[" && /\d/.test(right[i])) {
-      right = right.slice(0, i) + "[" + right.slice(i) + "]";
-    } else if (right[i] === "[" && /\d/.test(left[i])) {
-      left = left.slice(0, i) + "[" + left.slice(i) + "]";
-    }
-    i += 1;
-  }
-  return { left, right };
 }
 
 export function problem2022_13_1(input: string[]) {
@@ -34,9 +24,8 @@ export function problem2022_13_1(input: string[]) {
 
   for (let i = 0; i < input.length; i += 3) {
     pair += 1;
-    const unbalancedLeft = input[i];
-    const unbalancedRight = input[i + 1];
-    const { left, right } = balanceParens(unbalancedLeft, unbalancedRight);
+    const left = input[i];
+    const right = input[i + 1];
 
     // convert packet strings into arrays
     const leftArr = JSON.parse(left);
