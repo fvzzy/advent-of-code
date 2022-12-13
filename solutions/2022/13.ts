@@ -6,37 +6,30 @@ type PacketData<T> = T | PacketData<T>[];
 type NestedPacketData = PacketData<number>;
 
 export function compareLists(left, right): boolean {
-  // TODO: figure out why this initial mess doesn't work
-  //   for (let i = 0; i < left.length; i++) {
-  //     if (!Array.isArray(left[i]) && !Array.isArray(right[i])) {
-  //       if (left[i] > right[i]) return false;
-  //     } else if (Array.isArray(left[i]) && !Array.isArray(right[i])) {
-  //       return compareLists(left[i], [right[i]]);
-  //     } else if (!Array.isArray(left[i]) && Array.isArray(right[i])) {
-  //       return compareLists([left[i]], right[i]);
-  //     } else {
-  //       return compareLists(left[i], right[i]);
-  //     }
-  //   }
-  //   return left.length <= right.length;
+  for (let i = 0; i < left.length; i++) {
+    let l = left[i];
+    let r = right[i];
 
-  while (left.length && right.length) {
-    let l = left.shift();
-    let r = right.shift();
+    // handle right running out of items
+    if (typeof r === "undefined") return false;
 
     if (!Array.isArray(l) && !Array.isArray(r)) {
+      // exit at first element out of order in lists
       if (l > r) return false;
       if (l < r) return true;
     } else {
-      if (!Array.isArray(l)) l = [l];
-      if (!Array.isArray(r)) r = [r];
+      // convert singe integers to to an array
+      if (typeof l === "number") l = [l];
+      if (typeof r === "number") r = [r];
       const valid = compareLists(l, r);
-      if (typeof valid === "boolean") return valid;
+
+      // ignore cases where we exit with `undefined`, i.e. lists are equal length
+      if (typeof valid !== "undefined") return valid;
     }
   }
 
-  if (left.length) return false;
-  if (right.length) return true;
+  if (left.length > right.length) return false;
+  if (left.length < right.length) return true;
 }
 
 export function problem2022_13_1(input: string[]) {
@@ -61,14 +54,14 @@ export function problem2022_13_1(input: string[]) {
 
 export function problem2022_13_2(input: string[]) {
   input.push("[[2]]", "[[6]]");
+  const packets = input.filter(Boolean);
+  //   console.log(packets); // seems ok
 
-  const packets = input
-    .map((packet) => packet.replace("[]", "[0]"))
-    .map((packet) => packet.replace(/\[|\]|,/g, ""))
-    .filter(Boolean)
-    .sort();
+  packets.sort((a, b) => {
+    // console.log(a, b, compareLists(a, b)); // this also seems to be correct
+    return compareLists(a, b) ? 0 : 1;
+  });
 
-  console.log(packets);
-
-  return (packets.indexOf("2") + 1) * (packets.indexOf("6") + 1);
+  //   console.log(packets); // Array.sort doesn't seem to be affecting the order here?
+  return (packets.indexOf("[[2]]") + 1) * (packets.indexOf("[[6]]") + 1);
 }
