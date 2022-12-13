@@ -59,4 +59,16 @@ export function problem2022_13_1(input: string[]) {
   return validIndicesSum;
 }
 
-export function problem2022_13_2(input: string[]) {}
+export function problem2022_13_2(input: string[]) {
+  input.push("[[2]]", "[[6]]");
+
+  const packets = input
+    .map((packet) => packet.replace("[]", "[0]"))
+    .map((packet) => packet.replace(/\[|\]|,/g, ""))
+    .filter(Boolean)
+    .sort();
+
+  console.log(packets);
+
+  return (packets.indexOf("2") + 1) * (packets.indexOf("6") + 1);
+}
