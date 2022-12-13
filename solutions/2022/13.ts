@@ -6,16 +6,37 @@ type PacketData<T> = T | PacketData<T>[];
 type NestedPacketData = PacketData<number>;
 
 export function compareLists(left, right): boolean {
-  for (let i = 0; i < left.length; i++) {
-    if (!Array.isArray(left[i]) && !Array.isArray(right[i])) {
-      if (!right[i] || left[i] > right[i]) return false;
+  // TODO: figure out why this initial mess doesn't work
+  //   for (let i = 0; i < left.length; i++) {
+  //     if (!Array.isArray(left[i]) && !Array.isArray(right[i])) {
+  //       if (left[i] > right[i]) return false;
+  //     } else if (Array.isArray(left[i]) && !Array.isArray(right[i])) {
+  //       return compareLists(left[i], [right[i]]);
+  //     } else if (!Array.isArray(left[i]) && Array.isArray(right[i])) {
+  //       return compareLists([left[i]], right[i]);
+  //     } else {
+  //       return compareLists(left[i], right[i]);
+  //     }
+  //   }
+  //   return left.length <= right.length;
+
+  while (left.length && right.length) {
+    let l = left.shift();
+    let r = right.shift();
+
+    if (!Array.isArray(l) && !Array.isArray(r)) {
+      if (l > r) return false;
+      if (l < r) return true;
     } else {
-      if (!Array.isArray(left[i])) left[i] = [left[i]];
-      if (!Array.isArray(right[i])) right[i] = [right[i]];
-      return compareLists(left[i], right[i]);
+      if (!Array.isArray(l)) l = [l];
+      if (!Array.isArray(r)) r = [r];
+      const valid = compareLists(l, r);
+      if (typeof valid === "boolean") return valid;
     }
   }
-  return true;
+
+  if (left.length) return false;
+  if (right.length) return true;
 }
 
 export function problem2022_13_1(input: string[]) {
@@ -24,14 +45,14 @@ export function problem2022_13_1(input: string[]) {
 
   for (let i = 0; i < input.length; i += 3) {
     pair += 1;
-    const left = input[i];
-    const right = input[i + 1];
+    const leftStr = input[i];
+    const rightStr = input[i + 1];
 
     // convert packet strings into arrays
-    const leftArr = JSON.parse(left);
-    const rightArr = JSON.parse(right);
+    const left = JSON.parse(leftStr);
+    const right = JSON.parse(rightStr);
 
-    const valid = compareLists(leftArr, rightArr);
+    const valid = compareLists(left, right);
     if (valid) validIndicesSum += pair;
   }
 

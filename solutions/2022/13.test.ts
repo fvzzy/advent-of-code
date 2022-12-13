@@ -7,9 +7,9 @@ describe(`2022 day 13: "${title2022_13}"`, () => {
       expect(compareLists([[1], [2, 3, 4]], [[1], 4])).toBe(true);
       expect(compareLists([9], [[8, 7, 6]])).toBe(false);
       expect(compareLists([[4, 4], 4, 4], [[4, 4], 4, 4, 4])).toBe(true);
-      // expect(compareLists([7, 7, 7, 7], [7, 7, 7])).toBe(false);
+      expect(compareLists([7, 7, 7, 7], [7, 7, 7])).toBe(false);
       expect(compareLists([], [3])).toBe(true);
-      // expect(compareLists([[[]]], [[]])).toBe(false);
+      expect(compareLists([[[]]], [[]])).toBe(false);
       expect(compareLists([1, [2, [3, [4, [5, 6, 7]]]], 8, 9], [1, [2, [3, [4, [5, 6, 0]]]], 8, 9])).toBe(false);
     });
   });
