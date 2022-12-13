@@ -11,15 +11,30 @@ export const title2022_13 = "distress signal";
 //   return unwrapped;
 // }
 
-export function compareLists(left: number[], right: number[]) {
-  let i = 0;
-  // add a case to handle [[]] vs [] === false
-  while (left[i]) {
-    if (left.length !== right.length && i === right.length - 1) {
-      return left[i] < right[i];
+// export function compareLists(left: number[] | undefined, right: number[] | undefined) {
+//   let i = 0;
+//   // add a case to handle [[]] vs [] === false
+//   while (left[i]) {
+//     if (left.length !== right.length && i === right.length - 1) {
+//       return left[i] < right[i];
+//     }
+//     if (left[i] > right[i]) return false;
+//     i += 1;
+//   }
+//   return true;
+// }
+
+type PacketData<T> = T | PacketData<T>[];
+type NestedPacketData = PacketData<number>;
+
+// TODO: figure out how to type this
+export function compareLists(left, right): boolean {
+  for (let i = 0; i < left.length; i++) {
+    if (Array.isArray(left[i] && Array.isArray(right[i]))) {
+      return compareLists(left[i], right[i]);
     }
-    if (left[i] > right[i]) return false;
-    i += 1;
+    // if (left.length !== right.length && i === right.length -1 ) return left[i] < right[i];
+    if (!right[i] || left[i] > right[i]) return false;
   }
   return true;
 }
@@ -43,16 +58,15 @@ export function problem2022_13_1(input: string[]) {
 
   for (let i = 0; i < input.length; i += 3) {
     pair += 1;
-    let valid = true;
     const unbalancedLeft = input[i];
     const unbalancedRight = input[i + 1];
     const { left, right } = balanceParens(unbalancedLeft, unbalancedRight);
 
-    let leftList = [];
-    let rightList = [];
+    // convert packet strings into arrays
+    const leftArr = JSON.parse(left);
+    const rightArr = JSON.parse(right);
 
-    let j = 0;
-    let k = 0;
+    const valid = compareLists(leftArr, rightArr);
     if (valid) validIndicesSum += pair;
   }
 
