@@ -1,39 +1,15 @@
 // https://adventofcode.com/2022/day/13
 export const title2022_13 = "distress signal";
 
-// export function unwrapPacket(packet: string) {
-//   let i = 0;
-//   let j = packet.length - 1;
-//   let unwrapped = packet;
-//   while (unwrapped[i] === "[" && unwrapped[j] === "]") {
-//     unwrapped = unwrapped.slice(1, -1);
-//   }
-//   return unwrapped;
-// }
-
-// export function compareLists(left: number[] | undefined, right: number[] | undefined) {
-//   let i = 0;
-//   // add a case to handle [[]] vs [] === false
-//   while (left[i]) {
-//     if (left.length !== right.length && i === right.length - 1) {
-//       return left[i] < right[i];
-//     }
-//     if (left[i] > right[i]) return false;
-//     i += 1;
-//   }
-//   return true;
-// }
-
+// TODO: figure out how to represent nested arrays properly
 type PacketData<T> = T | PacketData<T>[];
 type NestedPacketData = PacketData<number>;
 
-// TODO: figure out how to type this
 export function compareLists(left, right): boolean {
   for (let i = 0; i < left.length; i++) {
-    if (Array.isArray(left[i] && Array.isArray(right[i]))) {
+    if (Array.isArray(left[i]) && Array.isArray(right[i])) {
       return compareLists(left[i], right[i]);
     }
-    // if (left.length !== right.length && i === right.length -1 ) return left[i] < right[i];
     if (!right[i] || left[i] > right[i]) return false;
   }
   return true;
