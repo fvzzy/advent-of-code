@@ -5,31 +5,22 @@ export const title2022_13 = "distress signal";
 type PacketData<T> = T | PacketData<T>[];
 type NestedPacketData = PacketData<number>;
 
-export function compareLists(left, right): boolean {
-  for (let i = 0; i < left.length; i++) {
-    let l = left[i];
-    let r = right[i];
+export function compareValues(left, right): -1 | 0 | 1 {
+  if (Number.isInteger(left) && Number.isInteger(right)) {
+    return Math.sign(right - left) as -1 | 0 | 1;
+  } else {
+    if (!Array.isArray(left)) left = [left];
+    if (!Array.isArray(right)) right = [right];
 
-    // handle right running out of items
-    if (typeof r === "undefined") return false;
+    for (let i = 0; i < Math.max(left.length, right.length); i++) {
+      if (left[i] === undefined) return 1;
+      if (right[i] === undefined) return -1;
 
-    if (!Array.isArray(l) && !Array.isArray(r)) {
-      // exit at first element out of order in lists
-      if (l > r) return false;
-      if (l < r) return true;
-    } else {
-      // convert singe integers to to an array
-      if (typeof l === "number") l = [l];
-      if (typeof r === "number") r = [r];
-      const valid = compareLists(l, r);
-
-      // ignore cases where we exit with `undefined`, i.e. lists are equal length
-      if (typeof valid !== "undefined") return valid;
+      const valid = compareValues(left[i], right[i]);
+      if (valid) return valid; // i.e. only return if we have a definite true/false result
     }
+    return 0; // inconclusive result after iterating through matched pairs
   }
-
-  if (left.length > right.length) return false;
-  if (left.length < right.length) return true;
 }
 
 export function problem2022_13_1(input: string[]) {
@@ -45,8 +36,8 @@ export function problem2022_13_1(input: string[]) {
     const left = JSON.parse(leftStr);
     const right = JSON.parse(rightStr);
 
-    const valid = compareLists(left, right);
-    if (valid) validIndicesSum += pair;
+    const valid = compareValues(left, right);
+    if (valid === 1) validIndicesSum += pair;
   }
 
   return validIndicesSum;
