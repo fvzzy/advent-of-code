@@ -25,8 +25,7 @@ function getMapBounds(paths: Scan) {
 function drawMap(paths: Scan, { minX, minY, maxX, maxY }) {
   const cols = maxX + 1 - minX;
   const rows = maxY + 1 - minY;
-  const map = [...Array(rows)].map(() => [...Array(cols)].map(() => "."));
-  map[0 - minY][500 - minX] = "+"; // sand entry point
+  const map = [...Array(rows)].map(() => [...Array(cols)].map(() => " "));
 
   for (let path of paths) {
     for (let i = 0; i < path.length - 1; i++) {
@@ -48,11 +47,52 @@ function drawMap(paths: Scan, { minX, minY, maxX, maxY }) {
   return map;
 }
 
+function pourSand(map: string[][], { minX, minY }) {
+  let sandX = 500 - minX;
+  let sandY = 0 - minY;
+  const moves = {
+    d: { x: 0, y: 1 },
+    l: { x: -1, y: 1 },
+    r: { x: 1, y: 1 },
+  };
+
+  const canMoveDown = (x, y) => map?.[y + moves.d.y]?.[x] === " ";
+  const canMoveLeft = (x, y) => map?.[y + moves.l.y]?.[x + moves.l.x] === " ";
+  const canMoveRight = (x, y) => map?.[y + moves.r.y]?.[x + moves.r.x] === " ";
+  const hasValidMove = (x, y) => canMoveDown(x, y) || canMoveLeft(x, y) || canMoveRight(x, y);
+
+  // anything in the first column will fall off once it reaches the bottom
+  if (sandX === 0 || !hasValidMove(sandX, sandY)) return false;
+
+  while (hasValidMove(sandX, sandY)) {
+    if (canMoveDown(sandX, sandY)) {
+      sandY += moves.d.y;
+      sandX += moves.d.x;
+    } else if (canMoveLeft(sandX, sandY)) {
+      sandY += moves.l.y;
+      sandX += moves.l.x;
+    } else {
+      sandY += moves.r.y;
+      sandX += moves.r.x;
+    }
+  }
+
+  // on the sides of the map, the next moves must be falling into the abyss?
+  if (sandX === 0 || sandX === map[0].length - 1) return false;
+
+  map[sandY][sandX] = "o";
+  return true;
+}
+
 export function problem2022_14_1(input: string[]) {
   const paths = input.map((path) => path.split(" -> ").map((xy) => xy.split(",").map(Number)));
   const bounds = getMapBounds(paths);
-  const map = drawMap(paths, bounds);
-  console.table(map);
+  let map = drawMap(paths, bounds);
+
+  let totalSand = 0;
+  while (pourSand(map, bounds)) totalSand += 1;
+  //   console.table(map);
+  return totalSand;
 }
 
 export function problem2022_14_2(input: string[]) {}
