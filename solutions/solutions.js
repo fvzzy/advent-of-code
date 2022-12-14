@@ -33,6 +33,7 @@ import { problem2022_10_1, problem2022_10_2, title2022_10 } from "../dist/2022/1
 import { problem2022_11_1, problem2022_11_2, title2022_11 } from "../dist/2022/11.js";
 import { problem2022_12_1, problem2022_12_2, title2022_12 } from "../dist/2022/12.js";
 import { problem2022_13_1, problem2022_13_2, title2022_13 } from "../dist/2022/13.js";
+import { problem2022_14_1, problem2022_14_2, title2022_14 } from "../dist/2022/14.js";
 
 export default {
   "2021_1": { p1: problem2021_1_1, p2: problem2021_1_2, title: title2021_1 },
@@ -70,4 +71,5 @@ export default {
   "2022_11": { p1: problem2022_11_1, p2: problem2022_11_2, title: title2022_11 },
   "2022_12": { p1: problem2022_12_1, p2: problem2022_12_2, title: title2022_12 },
   "2022_13": { p1: problem2022_13_1, p2: problem2022_13_2, title: title2022_13 },
+  "2022_14": { p1: problem2022_14_1, p2: problem2022_14_2, title: title2022_14 },
 };
