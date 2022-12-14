@@ -2,8 +2,8 @@
 export const title2022_13 = "distress signal";
 
 // TODO: figure out how to represent nested arrays properly
-type PacketData<T> = T | PacketData<T>[];
-type NestedPacketData = PacketData<number>;
+// type PacketData<T> = T | PacketData<T>[];
+// type NestedPacketData = PacketData<number>;
 
 export function compareValues(left, right): -1 | 0 | 1 {
   if (Number.isInteger(left) && Number.isInteger(right)) {
@@ -16,8 +16,8 @@ export function compareValues(left, right): -1 | 0 | 1 {
       if (left[i] === undefined) return 1;
       if (right[i] === undefined) return -1;
 
-      const valid = compareValues(left[i], right[i]);
-      if (valid) return valid; // i.e. only return if we have a definite true/false result
+      const result = compareValues(left[i], right[i]);
+      if (result !== 0) return result; // i.e. only return if we have a definite true/false result
     }
     return 0; // inconclusive result after iterating through matched pairs
   }
@@ -36,23 +36,21 @@ export function problem2022_13_1(input: string[]) {
     const left = JSON.parse(leftStr);
     const right = JSON.parse(rightStr);
 
-    const valid = compareValues(left, right);
-    if (valid === 1) validIndicesSum += pair;
+    const valid = compareValues(left, right) === 1;
+    if (valid) validIndicesSum += pair;
   }
 
   return validIndicesSum;
 }
 
 export function problem2022_13_2(input: string[]) {
-  input.push("[[2]]", "[[6]]");
-  const packets = input.filter(Boolean);
-  //   console.log(packets); // seems ok
+  const dividers = [[[2]], [[6]]];
+  const packets = input
+    .filter(Boolean)
+    .map((packet) => JSON.parse(packet))
+    .concat(dividers)
+    .sort(compareValues)
+    .reverse(); // urgh, could reverse the comparator outputs but I think they make more sense this way
 
-  packets.sort((a, b) => {
-    // console.log(a, b, compareLists(a, b)); // this also seems to be correct
-    return compareLists(a, b) ? 0 : 1;
-  });
-
-  //   console.log(packets); // Array.sort doesn't seem to be affecting the order here?
-  return (packets.indexOf("[[2]]") + 1) * (packets.indexOf("[[6]]") + 1);
+  return (packets.indexOf(dividers[0]) + 1) * (packets.indexOf(dividers[1]) + 1);
 }

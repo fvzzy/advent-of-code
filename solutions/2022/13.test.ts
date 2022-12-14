@@ -45,7 +45,7 @@ describe(`2022 day 13: "${title2022_13}"`, () => {
       expect(problem2022_13_1(exampleInput)).toBe(13);
     });
 
-    test.skip("part 2 solution works", () => {
+    test("part 2 solution works", () => {
       expect(problem2022_13_2(exampleInput)).toBe(140);
     });
   });
