@@ -17,8 +17,8 @@ function getMapBounds(paths: Scan) {
 }
 
 function drawMap(paths: Scan, { minX, minY, maxX, maxY }) {
-  const cols = maxX + 1 - minX;
-  const rows = maxY + 1 - minY;
+  const cols = maxX - minX + 1;
+  const rows = maxY - minY + 1;
   const map = [...Array(rows)].map(() => [...Array(cols)].map(() => " "));
 
   for (let path of paths) {
@@ -41,38 +41,39 @@ function drawMap(paths: Scan, { minX, minY, maxX, maxY }) {
   return map;
 }
 
-function pourSand(map: string[][], { minX, minY }) {
+function pourSand(map: string[][], { minX, minY, maxY }) {
   let sandX = 500 - minX;
   let sandY = 0 - minY;
+
   const moves = {
     d: { x: 0, y: 1 },
     l: { x: -1, y: 1 },
     r: { x: 1, y: 1 },
   };
+  const blockers = ["#", "o"];
 
-  const canMoveDown = (x, y) => map?.[y + moves.d.y]?.[x] === " ";
-  const canMoveLeft = (x, y) => map?.[y + moves.l.y]?.[x + moves.l.x] === " ";
-  const canMoveRight = (x, y) => map?.[y + moves.r.y]?.[x + moves.r.x] === " ";
-  const hasValidMove = (x, y) => canMoveDown(x, y) || canMoveLeft(x, y) || canMoveRight(x, y);
+  const unblockedDown = (x, y) => !blockers.includes(map[y + moves.d.y]?.[x]);
+  const unblockedLeft = (x, y) => !blockers.includes(map[y + moves.l.y]?.[x + moves.l.x]);
+  const unblockedRight = (x, y) => !blockers.includes(map[y + moves.r.y]?.[x + moves.r.x]);
+  const canMove = (x, y) => unblockedDown(x, y) || unblockedLeft(x, y) || unblockedRight(x, y);
+  const inTheAbyss = (y) => sandY > maxY;
 
-  // anything in the first column will fall off once it reaches the bottom
-  if (sandX === 0 || !hasValidMove(sandX, sandY)) return false;
+  if (!canMove(sandX, sandY)) return false;
 
-  while (hasValidMove(sandX, sandY)) {
-    if (canMoveDown(sandX, sandY)) {
-      sandY += moves.d.y;
+  while (canMove(sandX, sandY) && !inTheAbyss(sandY)) {
+    if (unblockedDown(sandX, sandY)) {
       sandX += moves.d.x;
-    } else if (canMoveLeft(sandX, sandY)) {
-      sandY += moves.l.y;
+      sandY += moves.d.y;
+    } else if (unblockedLeft(sandX, sandY)) {
       sandX += moves.l.x;
+      sandY += moves.l.y;
     } else {
-      sandY += moves.r.y;
       sandX += moves.r.x;
+      sandY += moves.r.y;
     }
   }
 
-  // on the sides of the map, the next moves must be falling into the abyss?
-  if (sandX === 0 || sandX === map[0].length - 1) return false;
+  if (inTheAbyss(sandY)) return false;
 
   map[sandY][sandX] = "o";
   return true;
@@ -85,7 +86,6 @@ export function problem2022_14_1(input: string[]) {
 
   let totalSand = 0;
   while (pourSand(map, bounds)) totalSand += 1;
-  //   console.table(map);
   return totalSand;
 }
 
