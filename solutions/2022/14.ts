@@ -6,20 +6,14 @@ type Path = Coordinate[];
 type Scan = Path[];
 
 function getMapBounds(paths: Scan) {
-  let minX = Infinity;
-  let minY = 0;
-  let maxX = 0;
-  let maxY = 0;
-
-  for (let path of paths) {
-    for (let part of path) {
-      minX = Math.min(minX, part[0]);
-      maxX = Math.max(maxX, part[0]);
-      minY = Math.min(minY, part[1]);
-      maxY = Math.max(maxY, part[1]);
-    }
-  }
-  return { minX, minY, maxX, maxY };
+  const xValues = paths.flat().map((xy) => xy[0]);
+  const yValues = paths.flat().map((xy) => xy[1]);
+  return {
+    minX: Math.min(...xValues, Infinity),
+    minY: Math.min(...yValues, 0),
+    maxX: Math.max(...xValues, 0),
+    maxY: Math.max(...yValues, 0),
+  };
 }
 
 function drawMap(paths: Scan, { minX, minY, maxX, maxY }) {
