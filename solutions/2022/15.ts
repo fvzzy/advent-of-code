@@ -6,24 +6,24 @@ function manhattanDistance(p1x, p1y, p2x, p2y) {
 }
 
 export function problem2022_15_1(input: string[]) {
-  const targetRow = 2000000;
+  const target = 10;
   const reports = input.map((line) => line.match(/-?\d+/g).map(Number));
   const coveredPoints: Set<string> = new Set();
 
-  const beaconsXInTargetRow = new Set([
+  const beaconsXAtTarget = new Set([
     ...reports
       .map((r) => r.slice(-2))
-      .filter((b) => b[1] === targetRow)
+      .filter((b) => b[1] === target)
       .map((b) => b[0]),
   ]);
 
   for (let [sX, sY, bX, bY] of reports) {
-    if (sY === targetRow) coveredPoints.add(`${sX}_${sY}`);
-    const maxDistance = manhattanDistance(sX, sY, bX, bY);
+    if (sY === target) coveredPoints.add(`${sX}_${sY}`);
+    const distance = manhattanDistance(sX, sY, bX, bY);
 
-    for (let x = sX - maxDistance; x <= sX + maxDistance; x++) {
-      if (maxDistance >= manhattanDistance(sX, sY, x, targetRow) && !beaconsXInTargetRow.has(x)) {
-        coveredPoints.add(`${x}_${targetRow}`);
+    for (let x = sX - distance; x <= sX + distance; x++) {
+      if (distance >= manhattanDistance(sX, sY, x, target) && !beaconsXAtTarget.has(x)) {
+        coveredPoints.add(`${x}_${target}`);
       }
     }
   }
@@ -31,4 +31,28 @@ export function problem2022_15_1(input: string[]) {
   return coveredPoints.size;
 }
 
-export function problem2022_15_2(input: string[]) {}
+export function problem2022_15_2(input: string[]) {
+  // const upperBound = 4000000;
+  const reports = input.map((line) => line.match(/-?\d+/g).map(Number));
+  const beacons = new Set([...reports.map((r) => r.slice(-2).join("_"))]);
+  const coveredPoints: Set<string> = new Set();
+
+  let target = 3; // need to loop over each row after this returns the correct size...
+  for (let [sX, sY, bX, bY] of reports) {
+    if (sY === target) coveredPoints.add(`${sX}_${sY}`);
+    const distance = manhattanDistance(sX, sY, bX, bY);
+
+    // for (let x = sX - distance; x <= sX + distance && x >= 0 && x <= 20; x++) {
+    for (let x = 0; x <= 20; x++) {
+      if (distance >= manhattanDistance(sX, sY, x, target) && !beacons.has(`${x}_${target}`)) {
+        coveredPoints.add(`${x}_${target}`);
+      }
+    }
+  }
+
+  console.log(coveredPoints);
+  console.log(coveredPoints.size);
+
+  // const foundBeacon = [14, 11];
+  // return foundBeacon[0] * upperBound + foundBeacon[1];
+}
