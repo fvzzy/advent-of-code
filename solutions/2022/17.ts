@@ -6,17 +6,20 @@ type Rock = RockPart[];
 type Chamber = string[][];
 
 // prettier-ignore
-const ROCKS: Rock[] = [
-    [[0,0], [1,0], [2,0], [3,0]], // horizontal line
-    [[1,0], [0,1], [1,1], [2,1], [1,2]], // cross
-    [[0,0], [1,0], [2,0], [2,1], [2,3]], // angle
-    [[0,0], [0,1], [0,2], [0,3]], // vertical line
-    [[0,0],[1,0],[0,1], [1,1]] // square 
+const ROCKS: {parts: Rock, height: number}[] = [
+    { parts: [[0,0], [1,0], [2,0], [3,0]], height: 1 }, // horizontal line
+    { parts: [[1,0], [0,1], [1,1], [2,1], [1,2]], height: 3 },// cross
+    { parts: [[0,2], [1,2], [2,2], [2,1], [2,0]], height: 3 }, // angle
+    { parts: [[0,0], [0,1], [0,2], [0,3]], height: 4 }, // vertical line
+    { parts: [[0,0], [1,0], [0,1], [1,1]], height: 2 }// square 
 ]
 
 const INITIAL_ROWS = 4;
 const COLS = 7;
-const EMPTY = ".";
+const EMPTY = " ";
+const EMPTY_ROW = () => [...Array(COLS)].map(() => EMPTY);
+const INIT_LEFT_GAP = 2;
+const INIT_TOP_GAP = 3;
 
 function canMove(direction: "down" | "left" | "right", rock: Rock, chamber: Chamber) {
   if (direction === "down") {
@@ -40,8 +43,8 @@ function drop(rock: Rock): Rock {
 }
 
 export function problem2022_17_1(input: string[]): number {
-  let chamber = [...Array(INITIAL_ROWS)].map(() => [...Array(COLS)].map(() => EMPTY));
-
+  let chamber = [...Array(INITIAL_ROWS)].map(() => EMPTY_ROW());
+  let highestOccupiedRow = chamber.length;
   const jetPattern = input[0].split("");
   let jetCount = 0;
 
@@ -49,42 +52,54 @@ export function problem2022_17_1(input: string[]): number {
     const jet = jetPattern[jetCount % jetPattern.length];
     if (jet === ">") {
       if (canMove("right", rock, chamber)) {
-        console.log("push right");
+        // console.log("push right");
         rock = rock.map(([x, y]) => [x + 1, y]);
-      } else {
-        console.log("push right but nothing happens");
+        //   } else {
+        //     console.log("push right but nothing happens");
       }
     } else if (jet === "<") {
       if (canMove("left", rock, chamber)) {
-        console.log("push left");
+        // console.log("push left");
         rock = rock.map(([x, y]) => [x - 1, y]);
-      } else {
-        console.log("push left but nothing happens");
+        //   } else {
+        //     console.log("push left but nothing happens");
       }
     }
     jetCount++;
     return rock;
   };
 
-  for (let turn = 0; turn < 1; turn++) {
-    let rock = ROCKS[turn % ROCKS.length];
-    rock = rock.map(([x, y]) => [x + 2, y]); // initialise rock two over from the left
+  for (let turn = 0; turn < 5; turn++) {
+    let rock = ROCKS[turn % ROCKS.length].parts;
+    rock = rock.map(([x, y]) => [x + INIT_LEFT_GAP, y]);
 
-    // expand chamber height here
+    // console.log("turn", turn, "rock type", turn % ROCKS.length);
+    // console.table(chamber);
+
+    rock = pushRock(rock); // one initial push before falling
     while (canMove("down", rock, chamber)) {
-      console.log("fall");
+      //   console.log("fall");
       rock = drop(rock);
       rock = pushRock(rock);
     }
 
-    // one more push at the bottom
-    rock = pushRock(rock);
+    for (let [x, y] of rock) {
+      chamber[y][x] = "#"; // settle current rock
+      highestOccupiedRow = Math.min(highestOccupiedRow, y); // set a new highest point
+    }
 
-    for (let [x, y] of rock) chamber[y][x] = "#";
+    // ensure there's enough space for the next rock to enter
+    const nextRockHeight = ROCKS[(turn + 1) % ROCKS.length].height;
+    let freeSpaceForNextRock = highestOccupiedRow - nextRockHeight - INIT_TOP_GAP;
+    while (freeSpaceForNextRock < 0) {
+      chamber.unshift(EMPTY_ROW());
+      freeSpaceForNextRock += 1;
+      highestOccupiedRow += 1;
+    }
   }
 
-  console.table(chamber);
-  return chamber.length;
+  //   console.table(chamber);
+  return chamber.slice(highestOccupiedRow).length;
 }
 
 export function problem2022_17_2(input: string[]) {}
