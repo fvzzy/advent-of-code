@@ -25,21 +25,36 @@ function parseInput(input: string[]): { valves: Record<string, ValveData>; targe
 export function problem2022_16_1(input: string[]) {
   const { valves, targetValves } = parseInput(input);
 
-  const opened: Set<string> = new Set();
-  let currentFlowRate = 0;
+  console.log(targetValves);
+
+  // let currentFlowRate = 0;
   let maxPressureReleased = 0;
 
-  // how many possible ways are there to open all useful valves?
-  const dfs = (valve: string, minutes = 1, path = valve) => {
-    if (minutes === 5) console.log(path); // exit also if we've visited all useful valves
+  // collect all unique ways to open all useful valves
+  const paths = [];
+
+  const dfs = (valve: string, minute = 1, targets = new Set(targetValves), path = valve) => {
+    // exit if we've opened all useful valves, or time has elapsed
+    console.log(targets, path);
+    if (!targets.size) {
+      paths.push(path);
+      console.log(paths);
+      return null;
+    }
+    if (minute === 30) return null;
+
+    const remainingTargets = new Set(targets);
+    remainingTargets.delete(valve);
 
     const { exits } = valves[valve];
     for (let exit of exits) {
-      dfs(exit, minutes + 1, `${path}-${exit}`);
+      dfs(exit, minute + 1, remainingTargets, `${path}-${exit}`);
     }
   };
 
   dfs("AA");
+  console.log(paths);
+  // console.log(paths.filter((p) => p.length < 10).length); //
 
   return maxPressureReleased;
 }
