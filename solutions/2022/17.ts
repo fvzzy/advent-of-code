@@ -16,18 +16,19 @@ const ROCKS: { parts: Rock, height: number, shape: string }[] = [
 
 const INITIAL_ROWS = 4;
 const COLS = 7;
-const EMPTY = " ";
-const EMPTY_ROW = () => [...Array(COLS)].map(() => EMPTY);
+const VOID_SYM = "";
+const ROCK_SYM = "@";
+const EMPTY_ROW = () => [...Array(COLS)].map(() => VOID_SYM);
 const INIT_LEFT_GAP = 2;
 const INIT_TOP_GAP = 3;
 
 function canMove(direction: "down" | "left" | "right", rock: Rock, chamber: Chamber) {
   if (direction === "down") {
-    return rock.every(([x, y]) => y !== chamber.length - 1 && chamber[y + 1][x] === EMPTY);
+    return rock.every(([x, y]) => y !== chamber.length - 1 && chamber[y + 1][x] === VOID_SYM);
   } else if (direction === "left") {
-    return rock.every(([x, y]) => x !== 0 && chamber[y][x - 1] === EMPTY);
+    return rock.every(([x, y]) => x !== 0 && chamber[y][x - 1] === VOID_SYM);
   } else if (direction === "right") {
-    return rock.every(([x, y]) => x !== chamber[0].length - 1 && chamber[y][x + 1] === EMPTY);
+    return rock.every(([x, y]) => x !== chamber[0].length - 1 && chamber[y][x + 1] === VOID_SYM);
   }
 }
 
@@ -46,7 +47,7 @@ function pushRock(rock: Rock, chamber: Chamber, jetPattern: string[], currentJet
 }
 
 function removeEmptySpace(chamber: Chamber) {
-  while (chamber[0].every((col) => col === EMPTY)) chamber.shift();
+  while (chamber[0].every((col) => col === VOID_SYM)) chamber.shift();
 }
 
 function towerHeight(input: string[], turns: number) {
@@ -55,7 +56,7 @@ function towerHeight(input: string[], turns: number) {
   let currentJetIdx = 0;
   let towerHeight = 0;
 
-  for (let turn = 0; turn < 2022; turn++) {
+  for (let turn = 0; turn < turns; turn++) {
     let rock = ROCKS[turn % ROCKS.length].parts;
 
     // initialise rock two over from the left wall
@@ -73,10 +74,19 @@ function towerHeight(input: string[], turns: number) {
     }
 
     // settle current rock
-    for (let [x, y] of rock) chamber[y][x] = "#";
+    for (let [x, y] of rock) chamber[y][x] = ROCK_SYM;
 
     removeEmptySpace(chamber);
-    // if (chamber[0])
+
+    // truncate any unreachable rows below the top five rows
+    for (let y = 0; y <= 5; y++) {
+      if (chamber[y + 1] && chamber[y + 1].every((x, idx) => x === ROCK_SYM || chamber[y][idx] === ROCK_SYM)) {
+        const prevChamberHeight = chamber.length;
+        chamber = chamber.slice(0, y + 1);
+        towerHeight += prevChamberHeight - chamber.length;
+        break;
+      }
+    }
 
     // ensure there's just enough space for the next rock to start at y=0
     const nextRockHeight = ROCKS[(turn + 1) % ROCKS.length].height;
@@ -86,7 +96,7 @@ function towerHeight(input: string[], turns: number) {
   }
 
   removeEmptySpace(chamber);
-  return chamber.length;
+  return chamber.length + towerHeight;
 }
 
 export function problem2022_17_1(input: string[]): number {
