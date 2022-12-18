@@ -23,79 +23,76 @@ const INIT_TOP_GAP = 3;
 
 function canMove(direction: "down" | "left" | "right", rock: Rock, chamber: Chamber) {
   if (direction === "down") {
-    for (let [x, y] of rock) {
-      if (y === chamber.length - 1 || chamber[y + 1][x] !== EMPTY) return false;
-    }
+    return rock.every(([x, y]) => y !== chamber.length - 1 && chamber[y + 1][x] === EMPTY);
   } else if (direction === "left") {
-    for (let [x, y] of rock) {
-      if (x === 0 || chamber[y][x - 1] !== EMPTY) return false;
-    }
+    return rock.every(([x, y]) => x !== 0 && chamber[y][x - 1] === EMPTY);
   } else if (direction === "right") {
-    for (let [x, y] of rock) {
-      if (x === chamber[0].length - 1 || chamber[y][x + 1] !== EMPTY) return false;
-    }
+    return rock.every(([x, y]) => x !== chamber[0].length - 1 && chamber[y][x + 1] === EMPTY);
   }
-  return true;
 }
 
-function drop(rock: Rock): Rock {
+function fall(rock: Rock): Rock {
   return rock.map(([x, y]) => [x, y + 1]);
 }
 
-export function problem2022_17_1(input: string[]): number {
+function pushRock(rock: Rock, chamber: Chamber, jetPattern: string[], currentJetIdx: number): Rock {
+  const jet = jetPattern[currentJetIdx % jetPattern.length];
+  if (jet === ">" && canMove("right", rock, chamber)) {
+    rock = rock.map(([x, y]) => [x + 1, y]);
+  } else if (jet === "<" && canMove("left", rock, chamber)) {
+    rock = rock.map(([x, y]) => [x - 1, y]);
+  }
+  return rock;
+}
+
+function removeEmptySpace(chamber: Chamber) {
+  while (chamber[0].every((col) => col === EMPTY)) chamber.shift();
+}
+
+function towerHeight(input: string[], turns: number) {
   let chamber = [...Array(INITIAL_ROWS)].map(() => EMPTY_ROW());
   const jetPattern = input[0].split("");
-  let jetCount = 0;
-
-  const pushRock = (rock: Rock): Rock => {
-    const jet = jetPattern[jetCount % jetPattern.length];
-    // console.log(jetCount, shape);
-    if (jet === ">" && canMove("right", rock, chamber)) {
-      rock = rock.map(([x, y]) => [x + 1, y]);
-    } else if (jet === "<" && canMove("left", rock, chamber)) {
-      rock = rock.map(([x, y]) => [x - 1, y]);
-    }
-    jetCount++;
-    return rock;
-  };
+  let currentJetIdx = 0;
+  let towerHeight = 0;
 
   for (let turn = 0; turn < 2022; turn++) {
     let rock = ROCKS[turn % ROCKS.length].parts;
 
+    // initialise rock two over from the left wall
     rock = rock.map(([x, y]) => [x + INIT_LEFT_GAP, y]);
-    // console.log("turn", turn, "shape", ROCKS[turn % ROCKS.length].shape);
-    // console.table(chamber);
 
-    rock = pushRock(rock); // one initial push before falling
+    // one initial push before falling
+    rock = pushRock(rock, chamber, jetPattern, currentJetIdx);
+    currentJetIdx++;
+
+    // repeat fall + push
     while (canMove("down", rock, chamber)) {
-      rock = drop(rock);
-      rock = pushRock(rock);
+      rock = fall(rock);
+      rock = pushRock(rock, chamber, jetPattern, currentJetIdx);
+      currentJetIdx++;
     }
 
     // settle current rock
-    for (let [x, y] of rock) {
-      chamber[y][x] = "#";
-    }
+    for (let [x, y] of rock) chamber[y][x] = "#";
 
-    // remove empty rows from the top of the chamber
-    while (chamber[0].every((col) => col === EMPTY)) {
-      chamber.shift();
-    }
+    removeEmptySpace(chamber);
+    // if (chamber[0])
 
-    // ensure there's enough space for the next rock to enter
+    // ensure there's just enough space for the next rock to start at y=0
     const nextRockHeight = ROCKS[(turn + 1) % ROCKS.length].height;
     for (let rows = nextRockHeight + INIT_TOP_GAP; rows > 0; rows--) {
       chamber.unshift(EMPTY_ROW());
     }
   }
 
-  console.table(chamber);
-
-  while (chamber[0].every((col) => col === EMPTY)) {
-    chamber.shift();
-  }
-
+  removeEmptySpace(chamber);
   return chamber.length;
 }
 
-export function problem2022_17_2(input: string[]) {}
+export function problem2022_17_1(input: string[]): number {
+  return towerHeight(input, 2022);
+}
+
+export function problem2022_17_2(input: string[]) {
+  return towerHeight(input, 1000000000000);
+}
