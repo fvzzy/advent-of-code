@@ -1,6 +1,21 @@
-import { problem2022_15_1, problem2022_15_2, title2022_15 } from "./15";
+import { problem2022_15_1, problem2022_15_2, title2022_15, mergeRanges } from "./15";
 
 describe(`2022 day 15: "${title2022_15}"`, () => {
+  describe("#mergeRanges", () => {
+    test("returns a set of ranges with overlaps merged", () => {
+      expect(
+        mergeRanges([
+          [12, 12],
+          [2, 14],
+          [2, 2],
+          [0, 2],
+          [16, 20],
+          [14, 18],
+        ])
+      ).toStrictEqual([[0, 20]]);
+    });
+  });
+
   describe("example inputs", () => {
     const exampleInput = [
       "Sensor at x=2, y=18: closest beacon is at x=-2, y=15",

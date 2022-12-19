@@ -5,6 +5,24 @@ function manhattanDistance(p1x: number, p1y: number, p2x: number, p2y: number) {
   return Math.abs(p1x - p2x) + Math.abs(p1y - p2y);
 }
 
+export function mergeRanges(ranges: number[][]): number[][] {
+  ranges.sort((a, b) => a[0] - b[0]);
+  const merged = [ranges[0]];
+
+  for (let [start, end] of ranges) {
+    // if the current range starts *inside* the last merged range
+    const maxValMerged = merged[merged.length - 1][1];
+    if (start <= maxValMerged) {
+      // merge it with the last merged range
+      merged[merged.length - 1][1] = Math.max(end, maxValMerged);
+    } else {
+      merged.push([start, end]);
+    }
+  }
+
+  return merged;
+}
+
 export function problem2022_15_1(input: string[]) {
   const target = input.length === 14 ? 10 : 2000000;
   const reports = input.map((line) => line.match(/-?\d+/g).map(Number));
@@ -33,35 +51,32 @@ export function problem2022_15_1(input: string[]) {
 }
 
 export function problem2022_15_2(input: string[]) {
-  const maxXY = input.length === 14 ? 20 : 4000000;
+  const maxXY = input.length === 14 ? 20 : 4e6;
   const reports = input.map((line) => line.match(/-?\d+/g).map(Number));
-  const beacons = new Set([...reports.map((r) => r.slice(-2).join("_"))]);
-  const coveredPoints: Set<string> = new Set();
   let foundBeacon: number[];
 
   for (let y = 0; y <= maxXY; y++) {
+    const scannerXRanges: number[][] = [];
+
     for (let [sX, sY, bX, bY] of reports) {
-      if (sY === y) coveredPoints.add(`${sX}`);
-      const distance = manhattanDistance(sX, sY, bX, bY);
-      for (let x = Math.max(sX - distance, 0); x <= Math.min(sX + distance, maxXY); x++) {
-        if (distance >= manhattanDistance(sX, sY, x, y) && !beacons.has(`${x}`)) {
-          coveredPoints.add(`${x}`);
-        }
+      const sensorRange = manhattanDistance(sX, sY, bX, bY);
+      const distanceToTargetY = manhattanDistance(sX, sY, sX, y);
+      const minimumDistance = Math.abs(sensorRange - distanceToTargetY);
+
+      // calculate and store the range that each scanner entirely covers on this line
+      if (distanceToTargetY <= sensorRange) {
+        const startScanX = Math.max(sX - minimumDistance, 0);
+        const endScanX = Math.min(sX + minimumDistance, maxXY);
+        scannerXRanges.push([startScanX, endScanX]);
       }
     }
 
-    if (coveredPoints.size !== maxXY + 1) {
-      for (let i = 0; i <= maxXY; i++) {
-        if (!coveredPoints.has(`${i}`)) {
-          foundBeacon = [i, y];
-          break;
-        }
-      }
+    const mergedRanges = mergeRanges(scannerXRanges);
+    if (mergedRanges.length !== 1) {
+      foundBeacon = [mergedRanges[1][0] - 1, y];
       break;
     }
-
-    coveredPoints.clear();
   }
 
-  return foundBeacon[0] * 4000000 + foundBeacon[1];
+  return foundBeacon[0] * 4e6 + foundBeacon[1];
 }
