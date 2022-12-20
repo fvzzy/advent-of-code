@@ -42,7 +42,9 @@ class CyclicalList {
     node.addOrder = this.size;
 
     if (!this.cursor) {
-      node.next = node.prev = this.cursor = node;
+      node.next = node;
+      node.prev = node;
+      this.cursor = node;
     } else {
       node.next = this.cursor;
       node.prev = this.cursor.prev;
@@ -56,19 +58,20 @@ class CyclicalList {
     this.size++;
 
     node.next = this.cursor.next;
-    this.cursor.next = node;
     node.prev = this.cursor;
     node.next.prev = node;
+    this.cursor.next = node;
 
     return this;
   }
 
-  remove() {
+  pop() {
     if (!this.cursor) return undefined;
     this.size--;
-    if (this.size === 0) {
+
+    if (!this.size) {
       this.cursor = null;
-      return null;
+      return undefined;
     } else {
       const node = this.cursor;
       this.cursor = this.cursor.next;
@@ -77,8 +80,9 @@ class CyclicalList {
   }
 
   move(steps: number) {
-    const node = this.remove();
-    return this.rotate(steps - 1).insert(node); // TODO: remove the -1 to make this a bit more obvious
+    const node = this.pop();
+
+    return this.rotate(-1).rotate(steps).insert(node);
   }
 
   mix() {
@@ -113,19 +117,6 @@ class CyclicalList {
     }
 
     return this;
-  }
-
-  toArray() {
-    const items = [];
-    if (!this.size) return items;
-
-    let node = this.cursor;
-    for (let i = 0; i < this.size; i++) {
-      items.push(node.value);
-      node = node.next;
-    }
-
-    return items;
   }
 }
 
