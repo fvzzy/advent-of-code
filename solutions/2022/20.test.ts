@@ -9,7 +9,7 @@ describe(`2022 day 20: "${title2022_20}"`, () => {
     });
 
     test("part 2 solution works", () => {
-      expect(problem2022_20_2(exampleInput)).toBe(undefined);
+      expect(problem2022_20_2(exampleInput)).toBe(1623178306);
     });
   });
 });

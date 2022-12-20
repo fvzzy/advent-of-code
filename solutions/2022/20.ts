@@ -140,4 +140,15 @@ export function problem2022_20_1(input: string[]) {
   return coord1 + coord2 + coord3;
 }
 
-export function problem2022_20_2(input: string[]) {}
+export function problem2022_20_2(input: string[]) {
+  const decryptionKey = 811589153;
+  const fileNumbers = input.map(Number).map((number) => number * decryptionKey);
+  const list = new CyclicalList(fileNumbers);
+
+  for (let i = 1; i <= 10; i++) list.mix();
+  const coord1 = list.zero().rotate(1000).cursor.value;
+  const coord2 = list.zero().rotate(2000).cursor.value;
+  const coord3 = list.zero().rotate(3000).cursor.value;
+
+  return coord1 + coord2 + coord3;
+}
