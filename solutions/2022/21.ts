@@ -22,29 +22,39 @@ export function problem2022_21_1(input: string[]) {
 }
 
 export function problem2022_21_2(input: string[]) {
-  // TODO: figure out how to solve simultaneous equations in code ¯\_(ツ)_/¯
   const monkeys = {};
 
   for (let instruction of input) {
     const [monkey, yell] = instruction.split(":");
-    let fn: () => number;
-
-    if (Number.isInteger(Number(yell))) {
-      fn = () => Number(yell);
+    if (monkey === "root") {
+      const [num1, _, num2] = yell.trim().split(" ");
+      monkeys[monkey] = `${num1} = ${num2}`;
+    } else if (monkey === "humn") {
+      monkeys[monkey] = "X";
     } else {
-      const [exp1, operator, exp2] = yell.trim().split(" ");
-      const correctOperator = monkey === "root" ? "===" : operator;
-      fn = () => eval(`monkeys['${exp1}']() ${correctOperator} monkeys['${exp2}']()`);
+      monkeys[monkey] = yell.trim();
     }
-
-    monkeys[monkey] = fn;
   }
 
-  let attempt = 0;
-  while (!monkeys["root"]()) {
-    monkeys["humn"] = () => attempt;
-    attempt++;
+  // generate equation to solve for X
+  while (monkeys["root"].match(/[a-z]{4}/g)) {
+    const matches = monkeys["root"].match(/[a-z]{4}/g);
+    for (let monkey of matches) {
+      monkeys["root"] = monkeys["root"].replace(monkey, `(${monkeys[monkey]})`);
+    }
   }
 
-  return attempt;
+  const twoNumberEquation = /\((\d+)\s([-|+|*|/])\s(\d+)\)/g;
+
+  let equation = monkeys["root"];
+  // unwrap single digits from parens
+  equation = equation.replace(/\((\d+)\)/g, "$1");
+  // replace any simple equations with their results
+  while (equation.match(twoNumberEquation)) {
+    equation = equation.replace(twoNumberEquation, (matched: string) => eval(matched));
+  }
+
+  // TODO: figure out how to solve for X in code
+  // for now, maybe this will get me close enough to solve...
+  console.log(equation);
 }
