@@ -25,7 +25,7 @@ describe(`2022 day 21: "${title2022_21}"`, () => {
     });
 
     test("part 2 solution works", () => {
-      expect(problem2022_21_2(exampleInput)).toBe(undefined);
+      expect(problem2022_21_2(exampleInput)).toBe(301);
     });
   });
 });
