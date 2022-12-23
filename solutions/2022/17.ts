@@ -80,19 +80,21 @@ function towerHeight(input: string[], turns: number) {
 
     removeEmptySpace(chamber);
 
-    // store snapshot of current state, including the pattern of the top five rows
-    const headRowsPattern = chamber.slice(0, 1).flat().join("");
+    // store snapshot of current state, including the pattern of the top rows
+    // the number of rows to slice from the top was trial and error; for my input
+    // this stabilised and continued passing for test data after 12
+    const headRowsPattern = chamber.slice(0, 12).flat().join("");
     const currentState = `${rockIdx}_${jetIdx}_${headRowsPattern}`;
 
-    // check if we've seen this state before, fast-forward iterations if we have
+    // check if we've seen this state before, fast-forward if we have
     if (!snapshots[currentState]) {
       snapshots[currentState] = { turn, height: chamber.length };
     } else {
       const { turn: turnAtSnapshot, height: heightAtSnapshot } = snapshots[currentState];
       const turnsToSkip = turn - turnAtSnapshot;
-      const skips = Math.floor(turns / turnsToSkip) - 1;
+      const skips = Math.floor((turns - turnAtSnapshot) / turnsToSkip) - 1;
       const heightPerSkip = chamber.length - heightAtSnapshot;
-      skippedHeight += heightPerSkip * skips;
+      skippedHeight += skips * heightPerSkip;
       turn += skips * turnsToSkip;
     }
 
@@ -111,6 +113,6 @@ export function problem2022_17_1(input: string[]): number {
   return towerHeight(input, 2022);
 }
 
-export function problem2022_17_2(input: string[]) {
-  return towerHeight(input, 1000000000000); // TODO: fix off-by-one error for test data
+export function problem2022_17_2(input: string[]): number {
+  return towerHeight(input, 1000000000000);
 }
